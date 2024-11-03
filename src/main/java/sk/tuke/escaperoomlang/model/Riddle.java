@@ -1,3 +1,5 @@
+package sk.tuke.escaperoomlang.model;
+
 //import java.util.Arrays;
 
 public class Riddle { //Question Solution Hint Unlocks Clue Duration Lights
