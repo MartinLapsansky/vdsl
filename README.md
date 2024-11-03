@@ -22,7 +22,7 @@ Abstraktnú syntax zapísaná v EBNF:
     --Duration -> int;
     --Puzzle -> Titlen PuzzleIntro Solution Question Unlocks Clue Duration Lights+;
     --PuzzleIntro -> string;
-    --Visualisation -> Title Descr Lights Duration;
+    --Visualisation -> Title Message Lights Duration;
     --Message -> string;
     --TerminationCondition -> Value Visualisation;
     --Value -> int;

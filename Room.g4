@@ -14,7 +14,7 @@ riddle: 'riddle' title=STRING question=STRING solution=STRING hint=STRING unlock
 
 puzzle: 'puzzle' title=STRING puzzle_intro=STRING solution=STRING lightsarray? question=STRING unlocks clue=STRING duration:INT lights+;
 
-visualisation: 'visualisation' title=STRING descr=STRING lights duration=INT;
+visualisation: 'visualisation' title=STRING message=STRING lights duration=INT;
 
 termination_condition: 'if' 'duration' 'is' value=INT 'then' visualisation;
 
