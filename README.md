@@ -5,31 +5,31 @@
 ## Abstraktná syntax
 
 Model jazyka vyjadrený vo forme [diagramu tried](escape-room.svg). 
-Koreňový pojem [Room](src/main/java/sk/tuke/dsl/gamelang/model/Game.java) je vyznačený červenou farbou.
+Koreňový pojem [Room](src/main/java/sk/tuke/escaperoomlang/model/Room.java) je vyznačený červenou farbou.
 
 Abstraktnú syntax zapísaná v EBNF:
 ```
-    --Room -> Title Intro Riddle Riddle Riddle+ Puzzle* Visualisation+ TerminationCondition;
-    --Title -> string;
-    --Intro -> string;
-    --Begin -> string;
-    --Unlocks -> string;
-    --Riddle -> Title Question Solution Hint Unlocks Clue Duration Lights+;
-    --Question -> string;
+    Room -> Title Intro Riddle Riddle Riddle+ Puzzle* Visualisation+ TerminationCondition;
+    Title -> string;
+    Intro -> string;
+    Begin -> string;
+    Unlocks -> string;
+    Riddle -> Title Question Solution Hint Unlocks Clue Duration Lights+;
+    Question -> string;
     Solution -> string;
-    --Hint -> string;
+    Hint -> string;
     Clue -> string;
-    --Duration -> int;
-    --Puzzle -> Titlen PuzzleIntro Solution Question Unlocks Clue Duration Lights+;
-    --PuzzleIntro -> string;
-    --Visualisation -> Title Message Lights Duration;
-    --Message -> string;
-    --TerminationCondition -> Value Visualisation;
-    --Value -> int;
-    --Lights ->  Mode RowNumber Color;
-    --Mode -> string;
-    --RowNumber -> string;
-    --Color -> string;
+    Duration -> int;
+    Puzzle -> Titlen PuzzleIntro Solution Question Unlocks Clue Duration Lights+;
+    PuzzleIntro -> string;
+    Visualisation -> Title Message Lights Duration;
+    Message -> string;
+    TerminationCondition -> Value Visualisation;
+    Value -> int;
+    Lights ->  Mode RowNumber Color;
+    Mode -> string;
+    RowNumber -> string;
+    Color -> string;
 ```
 
 **Definovanie hry (sentence definition):** Escape room pre OpenLab je definovaný miestnosťou (Room) pozostávajúcou z dvoch rozličných typov úloh (Riddle/Puzzle) a opisuje ho krátky úvod do hry (Intro). Následnosť úloh je definovaná od počiatočnej úlohy (Begin), po konečnú úlohu pomocou odomknutia (Unlocks). Ukončenie hry definuje podmienka pre neúspešné ukončenie hry (TerminationCondition). Podmienku ukončenia hry opisuje počiatočná hodnota časovača (Value) a jej náseldkom je vizualizácia výsledku hry (Visualisation). 
