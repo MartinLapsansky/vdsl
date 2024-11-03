@@ -9,43 +9,44 @@ Koreňový pojem [Room](src/main/java/sk/tuke/dsl/gamelang/model/Game.java) je v
 
 Abstraktnú syntax zapísaná v EBNF:
 ```
-    Room -> Title Intro Riddle Riddle Riddle+ Puzzle* Visualisation+ TerminationCondition;
-    Title -> string;
-    Intro -> string;
-    Begin -> string;
-    Unlocks -> string;
-    Riddle -> Name Question Solution Hint Unlocks Clue Duration Lights+;
-    Name -> string;
-    Question -> string;
+    --Room -> Title Intro Riddle Riddle Riddle+ Puzzle* Visualisation+ TerminationCondition;
+    --Title -> string;
+    --Intro -> string;
+    --Begin -> string;
+    --Unlocks -> string;
+    --Riddle -> Title Question Solution Hint Unlocks Clue Duration Lights+;
+    --Question -> string;
     Solution -> string;
-    Hint -> string;
+    --Hint -> string;
     Clue -> string;
-    Duration -> int;
-    Puzzle -> Name PuzzleIntro Solution Question Unlocks Clue Duration Lights+;
-    PuzzleIntro -> string;
-    Visualisation -> Name Descr Color Duration;
-    Descr -> string;
-    TerminationCondition -> Value Visualisation;
-    Value -> int;
-    Lights ->  Mode RowNumber Color;
-    Mode -> string;
-    RowNumber -> string;
-    Color -> string;
+    --Duration -> int;
+    --Puzzle -> Titlen PuzzleIntro Solution Question Unlocks Clue Duration Lights+;
+    --PuzzleIntro -> string;
+    --Visualisation -> Title Descr Lights Duration;
+    --Message -> string;
+    --TerminationCondition -> Value Visualisation;
+    --Value -> int;
+    --Lights ->  Mode RowNumber Color;
+    --Mode -> string;
+    --RowNumber -> string;
+    --Color -> string;
 ```
 
-**Definovanie hry (sentence definition):** Hra (Game) je definovaná miestami (Place) medzi ktorými sú prechody. V mieste sa môže nachádzať viacero predmetov (Item). Spájanie 2 predmetov s cieľom vytvorenia ďalšieho predmetu je definované receptom (Recipe). 
-Pre hru je definovaný finálny predmet, miesto štartu, úvodný a finálny text a texty opisujúce miesta a predmety.
+**Definovanie hry (sentence definition):** Escape room pre OpenLab je definovaný miestnosťou (Room) pozostávajúcou z dvoch rozličných typov úloh (Riddle/Puzzle) a opisuje ho krátky úvod do hry (Intro). Následnosť úloh je definovaná od počiatočnej úlohy (Begin), po konečnú úlohu pomocou odomknutia (Unlocks). Ukončenie hry definuje podmienka pre neúspešné ukončenie hry (TerminationCondition). Podmienku ukončenia hry opisuje počiatočná hodnota časovača (Value) a jej náseldkom je vizualizácia výsledku hry (Visualisation). 
+Vizualizácia pozostáva zo svetiel (Lights), trvania vizualizácie (Duration) a správy pre hráča (Message).
+Svetlá majú režim svietenia (Mode), farbu (Color) a číslo svetelného pásu, ktorý má byť rozsvietený (RowNumber).
+Hra, úlohy a vizualizácie majú názvy (Title), úlohy majú v závislosti od typu nasledujúce prvky: nápovedu (Hint), otázku (Question), intro k aktivite (PuzzleIntro), riešenie (Solution) a všetky poskytujú nápovedu k finálnej úlohe (Clue);
 
-**Hranie hry (sentence execution):** Cieľom hráča je vytvoriť finálny predmet prostredníctvom prechádzanie medzi miestami, zbierania vecí do batohu a ich vzájomného spájania.
-Stav hrania hry je definovaný obsahom batohu a aktuálnym miestom.
+**Hranie hry (sentence execution):** Cieľom hráčov je vyriešiť všetky úlohy hry pred naplnením podmienky pre neúspešné ukončenie hry. Riešením jednej úlohy sa odomkne ďalšia a zároveň získa nápoveda k finálnej úlohe, ktorej vyriešením sa hra úspešne končí.
+Stav hry je definovaný poradím riešenej úlohy.
 
 ### Validácia
 
 Validácia je súčasťou tried modelu jazyka - metóda `validate()` zahŕňa overenie:
 - `null` a prázdnych reťazcov
 - povinnosť minimálneho počtu pojmov
-- dostupnosť všetkých miest prostredníctvom východov
-- dohrateľnosť hry - získanie finálneho predmetu
+- dostupnosť všetkých taskov ich definíciou v správnej následnosti (NEMAME)
+- dohrateľnosť hry - definícia práve jednej finálnej úlohy (NEMAME)
 
 ## Konkrétna syntax
 
@@ -61,14 +62,13 @@ Ukážkové vety z jazyka:
 
 ### Externý doménovo-špecifický jazyk
 
-Konkrétna sytax je definovaná prostredníctvom gramatiky [Game.g4](src/main/antlr4/sk/tuke/dsl/gamelang/parser/Game.g4) pre nástroj ANTLR 4.
+Konkrétna sytax je definovaná prostredníctvom gramatiky [Room.g4](Room.g4) pre nástroj ANTLR 4.
 Strom odvodenia je spracovaný podľa vzoru Listener, trieda [GameParserListener](src/main/java/sk/tuke/dsl/gamelang/parser/GameParserListener.java).
 
 Balík: [sk.tuke.dsl.gamelang.parser](src/main/java/sk/tuke/dsl/gamelang/parser)
 
 Ukážkové vety z jazyka:
-- Hra [Pečieme praženicu](game1.game)
-- Hra [Vesmírny ženích](game2.game)
+- Miestnosť [Unlock (Your Time)](room1.txt)
 
 ## Sémantika
 

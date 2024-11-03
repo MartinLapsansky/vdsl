@@ -29,13 +29,15 @@ main riddle "Final task" "What are the colors that have been displayed after sol
     unlocks "Success"
     duration 60
 
-visualisation "Success" "Congratulations, you won! You have successfully unlocked your way out of the room!"
+visualisation "Success" "Congratulations, you won! You have successfully unlocked your way out of the room!"ˇ
     color: "green"
     duration 120
+    lights "all" NULL color 
 
 visualisation "Failure" "Time's up and you remain locked! That means game over. Better luck next time!"
     color: "red"
     duration 120
+    lights "all" NULL color 
 
 ////////////////////////////////////////////////////////////////
 //dalsie veci, kt nie su v dg, ale asi ich treba mat(?):
