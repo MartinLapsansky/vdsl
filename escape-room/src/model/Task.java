@@ -21,6 +21,10 @@ public class Task {
         return isSolved;
     }
 
+    public String getTaskDetails() {
+        return taskDetails;
+    }
+
     public enum taskType {
         LOGIC_PUZZLE,
         VOICE_PUZZLE,

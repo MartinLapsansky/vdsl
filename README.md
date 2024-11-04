@@ -9,35 +9,22 @@ Koreňový pojem [Room](src/main/java/sk/tuke/escaperoomlang/model/Room.java) je
 
 Abstraktnú syntax zapísaná v EBNF:
 ```
-    Room -> Title Intro Riddle Riddle Riddle+ Puzzle* Visualisation+ TerminationCondition;
-    Title -> string;
-    Intro -> string;
-    Begin -> string;
-    Unlocks -> string;
-    Riddle -> Title Question Solution Hint Unlocks Clue Duration Lights+;
-    Question -> string;
-    Solution -> string;
-    Hint -> string;
-    Clue -> string;
-    Duration -> int;
-    Puzzle -> Titlen PuzzleIntro Solution Question Unlocks Clue Duration Lights+;
-    PuzzleIntro -> string;
-    Visualisation -> Title Message Lights Duration;
-    Message -> string;
-    TerminationCondition -> Value Visualisation;
-    Value -> int;
-    Lights ->  Mode RowNumber Color;
-    Mode -> string;
-    RowNumber -> string;
-    Color -> string;
+    EscapeRoom -> Name String WelcomeMessage String EscapeMessage String Room+
+    Room -> Name String Description String TimeLimit int Task+ FinalTask
+    Task -> Index int Name String Description String TaskType Type Solution Solution
+    TaskDetails String SuccessColor String Hint*
+    
+    FinalTask -> Id int Description String SuccessColors list
+    Hint -> Description String
+    Solution -> CorrectAnswer String | int
+    TaskType -> LogicPuzzle | VoicePuzzle | CodePuzzle | RiddlePuzzle
+    FinalScore -> Value int
 ```
 
-**Definovanie hry (sentence definition):** Escape room pre OpenLab je definovaný miestnosťou (Room) pozostávajúcou z dvoch rozličných typov úloh (Riddle/Puzzle) a opisuje ho krátky úvod do hry (Intro). Následnosť úloh je definovaná od počiatočnej úlohy (Begin), po konečnú úlohu pomocou odomknutia (Unlocks). Ukončenie hry definuje podmienka pre neúspešné ukončenie hry (TerminationCondition). Podmienku ukončenia hry opisuje počiatočná hodnota časovača (Value) a jej náseldkom je vizualizácia výsledku hry (Visualisation). 
-Vizualizácia pozostáva zo svetiel (Lights), trvania vizualizácie (Duration) a správy pre hráča (Message).
-Svetlá majú režim svietenia (Mode), farbu (Color) a číslo svetelného pásu, ktorý má byť rozsvietený (RowNumber).
-Hra, úlohy a vizualizácie majú názvy (Title), úlohy majú v závislosti od typu nasledujúce prvky: nápovedu (Hint), otázku (Question), intro k aktivite (PuzzleIntro), riešenie (Solution) a všetky poskytujú nápovedu k finálnej úlohe (Clue);
+**Definovanie hry (sentence definition):** Escape room pre OpenLab je definovaný miestnosťou (Room) pozostávajúcou z rozličných typov úloh (LOGIC_PUZZLE,VOICE_PUZZLE,CODE_PUZZLE,RIDDLE_PUZZLE). Escape Room sa skladá z názvu (name), uvitacej spravy (welcomeMessage) a záverečnej správy (escapeMessage). Následnosť úloh je definovaná od počiatočnej úlohy po konečnú úlohu. Ukončenie hry definuje hodnota časovača (timeLimit) každej miestnosti a úspešné vyriešenie všetkých úloh.
+Každá úloha (Task) obsahuje práve jedno riešenie (Solution), ktoré obsahuje práve jednu (correctAnswer) a niekoľko nápovied (Hint). Po úspešnom vyriešení úlohy sa hráčovi zobrazí farba (successColor) ktorá slúži ako základ pre vyriešenie finálnej úlohy (finalTask), v ktorej hráč musí zadať v správnej sekvencii tieto farby (successColors). Vo výsledku sa užívateľovi zobrazí výsledne skóre (finalScore), ktoré vznikne na základe počtu použitých hintov, vyriešených úloh a pokusov o správnu odpoveď. 
 
-**Hranie hry (sentence execution):** Cieľom hráčov je vyriešiť všetky úlohy hry pred naplnením podmienky pre neúspešné ukončenie hry. Riešením jednej úlohy sa odomkne ďalšia a zároveň získa nápoveda k finálnej úlohe, ktorej vyriešením sa hra úspešne končí.
+**Hranie hry (sentence execution):** Cieľom hráčov je vyriešiť všetky úlohy hry pred vypršaním časového limitu. Riešením jednej úlohy sa odomkne ďalšia a zároveň získa nápoveda k finálnej úlohe, ktorej vyriešením sa hra úspešne končí.
 Stav hry je definovaný poradím riešenej úlohy.
 
 ### Validácia

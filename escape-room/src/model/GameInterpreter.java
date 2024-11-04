@@ -97,37 +97,39 @@ public class GameInterpreter {
             }
             if (!roomTimeExpired.get() && currentRoom.areAllTasksSolved()) {
                 timerThread.interrupt();
-                evaluateFinalChallenge(overallSuccessColors);
+//                evaluateFinalChallenge(overallSuccessColors);
             }
         }
+        FinalTask finalTask = new FinalTask(1,"Final Color Sequence Challenge", overallSuccessColors);
+        evaluateFinalChallenge(finalTask);
 
     }
 
-    private void evaluateFinalChallenge(List<String> overallSuccessColors) {
-        System.out.println("\nFinal Task: Enter the sequence of colors in the correct order.");
-        System.out.println("Colors: " + overallSuccessColors);
+    private void evaluateFinalChallenge(FinalTask finalTask) {
+        System.out.println("\nFinal Task: " + finalTask.getName());
+        System.out.println("Description: " + finalTask.getDescription());
+        System.out.println("Colors to Remember: " + finalTask.getSuccessColors());
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the sequence of colors, separated by spaces: ");
         String userInput = scanner.nextLine().trim();
         String[] userColors = userInput.split("\\s+");
 
-        if (validateColorSequence(overallSuccessColors, userColors)) {
+        if (finalTask.validate(userColors)) {
             System.out.println(escapeRoom.getEscapeMessage());
-
         } else {
             System.out.println("Incorrect color sequence. Better luck next time!");
         }
     }
-    private boolean validateColorSequence (List < String > expectedColors, String[]userColors){
-        if (expectedColors.size() != userColors.length) {
-            return false;
-        }
-        for (int i = 0; i < expectedColors.size(); i++) {
-            if (!expectedColors.get(i).equalsIgnoreCase(userColors[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
+//    private boolean validateColorSequence (List < String > expectedColors, String[]userColors){
+//        if (expectedColors.size() != userColors.length) {
+//            return false;
+//        }
+//        for (int i = 0; i < expectedColors.size(); i++) {
+//            if (!expectedColors.get(i).equalsIgnoreCase(userColors[i])) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 }

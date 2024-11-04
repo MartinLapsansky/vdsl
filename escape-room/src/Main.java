@@ -17,6 +17,11 @@ public class Main {
                 .finishTask()
                 .finishRoom()
                 .build();
-        escapeRoom.play();
+        try {
+            escapeRoom.validate();
+            escapeRoom.play();
+        } catch (IllegalArgumentException e) {
+            System.err.println("Validation Error: " + e.getMessage());
+        }
     }
 }

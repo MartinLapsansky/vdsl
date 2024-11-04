@@ -11,6 +11,7 @@ public class Room {
     private int solvedTasksCount;
     private int hintsTaken;
     private List<String> successColors;
+    private Task finalTask;
 
     // Constructor
     public Room(int timeLimit, String name, String description) {
@@ -27,6 +28,13 @@ public class Room {
     public Room addTask(Task task) {
         this.tasks.add(task);
         return this;
+    }
+
+    public Task getFinalTask() {
+        return finalTask;
+    }
+    public void setFinalTask(Task finalTask) {
+        this.finalTask = finalTask;
     }
 
     // Getters
@@ -48,9 +56,10 @@ public class Room {
         hintsTaken++;
     }
     public void addSuccessColor(String color) {
-        if (color != null && !color.isEmpty()) {
-            successColors.add(color);
+        if (successColors == null) {
+            successColors = new ArrayList<>();
         }
+        successColors.add(color);
     }
     public List<String> getSuccessColors() {
         return successColors;
@@ -65,4 +74,11 @@ public class Room {
         return Math.max(score, 0);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public boolean isFinalTask(Task task) {
+        return task != null && task.equals(finalTask);
+    }
 }

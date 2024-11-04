@@ -2,10 +2,7 @@ package model;
 
 import Interfaces.EscapeRoom;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.*;
 
 public class EscapeRoomImpl implements EscapeRoom {
     private String welcomeMessage;
@@ -49,6 +46,7 @@ public class EscapeRoomImpl implements EscapeRoom {
     public String getWelcomeMessage() {
         return welcomeMessage;
     }
+
     public String getEscapeMessage() {
         return escapeMessage;
     }
@@ -78,6 +76,7 @@ public class EscapeRoomImpl implements EscapeRoom {
             return currentRoomBuilder;
         }
 
+
         public EscapeRoomImpl build() {
             return new EscapeRoomImpl(this);
         }
@@ -92,6 +91,11 @@ public class EscapeRoomImpl implements EscapeRoom {
             this.parentBuilder = parentBuilder;
             this.room = new Room(timeLimit, name, description);
         }
+        public RoomBuilder setFinalTask(int id, String description, List<String> successColors) {
+            FinalTask finalTask = new FinalTask(id, description, successColors);
+            this.room.setFinalTask(finalTask);
+            return this;
+        }
 
         public TaskBuilder addTask(int index, String name, String description, Task.taskType type, Solution solution, String taskDetails, String successColor) {
             currentTaskBuilder = new TaskBuilder(this, index, name, description, type, solution, taskDetails, successColor);
@@ -102,6 +106,7 @@ public class EscapeRoomImpl implements EscapeRoom {
             parentBuilder.rooms.add(room);
             return parentBuilder;
         }
+
     }
 
     public static class TaskBuilder {
@@ -129,15 +134,33 @@ public class EscapeRoomImpl implements EscapeRoom {
         }
     }
 
-    private boolean validateColorSequence (List < String > expectedColors, String[]userColors){
-        if (expectedColors.size() != userColors.length) {
-            return false;
-        }
-        for (int i = 0; i < expectedColors.size(); i++) {
-            if (!expectedColors.get(i).equalsIgnoreCase(userColors[i])) {
-                return false;
+    public void validate() {
+        // Validate that each room has a unique and valid time limit
+        for (Room room : rooms) {
+            if (room.getTimeLimit() <= 0) {
+                throw new IllegalArgumentException("Room '" + room.getName() + "' must have a positive time limit.");
+            }
+
+            // Validate that each task within the room has a unique and valid ID
+            Set<Integer> taskIds = new HashSet<>();
+            for (Task task : room.getTasks()) {
+                if (task.getIndex() <= 0) {
+                    throw new IllegalArgumentException("Task ID must be positive. Found invalid ID in task '" + task.getName() + "'.");
+                }
+                if (!taskIds.add(task.getIndex())) {
+                    throw new IllegalArgumentException("Duplicate Task ID found in room '" + room.getName() + "'. Task ID: " + task.getIndex());
+                }
+                // Check for non-null and non-empty strings for task attributes
+                if (task.getName() == null || task.getName().trim().isEmpty()) {
+                    throw new IllegalArgumentException("Task name cannot be null or empty for task ID " + task.getIndex());
+                }
+                if (task.getDescription() == null || task.getDescription().trim().isEmpty()) {
+                    throw new IllegalArgumentException("Task description cannot be null or empty for task '" + task.getName() + "'.");
+                }
+                if (task.getTaskDetails() == null || task.getTaskDetails().trim().isEmpty()) {
+                    throw new IllegalArgumentException("Task details cannot be null or empty for task '" + task.getName() + "'.");
+                }
             }
         }
-        return true;
     }
 }
