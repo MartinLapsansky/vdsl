@@ -1,6 +1,6 @@
 # vdsl
 
-# Doménovo-špecifický jazyk pre textové adventúry
+# Doménovo-špecifický jazyk pre Escape Room
 
 ## Abstraktná syntax
 
