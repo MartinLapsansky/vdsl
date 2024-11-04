@@ -16,15 +16,13 @@ public class FinalTask extends Task {
 
     // Method to validate the user's input
     public boolean validate(String[] userColors) {
-        // Check if the userColors array length matches the successColors list size
         if (userColors.length != successColors.size()) {
-            return false; // The sequences are not the same length
+            return false;
         }
 
-        // Compare each color in the userColors with the successColors
         for (int i = 0; i < successColors.size(); i++) {
             if (!successColors.get(i).equalsIgnoreCase(userColors[i])) {
-                return false; // A color does not match
+                return false;
             }
         }
 
