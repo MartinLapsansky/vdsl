@@ -33,12 +33,11 @@ public class Task {
         RIDDLE_PUZZLE
     }
 
-    public Task(int index, String name, String description, taskType type, Solution solution, String taskDetails, String successColor) {
+    public Task(int index, String name, String description, taskType type,String taskDetails, String successColor) {
         this.index = index; // Initialize the index
         this.name = name;
         this.description = description;
         this.type = type;
-        this.solution = solution;
         this.hints = new ArrayList<>();
         this.taskDetails = taskDetails;
         this.successColor = successColor;
@@ -54,6 +53,10 @@ public class Task {
         if (this.type == taskType.LIGHT_PUZZLE && this.lightSequence != null) {
             this.lightSequence.add(lightColor);
         }
+        return this;
+    }
+    public Task addSolution(Solution solution) {
+        this.solution = solution;
         return this;
     }
 

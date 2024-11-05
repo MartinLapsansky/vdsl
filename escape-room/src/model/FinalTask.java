@@ -6,7 +6,7 @@ public class FinalTask extends Task {
     private List<String> successColors;
 
     public FinalTask(int id, String description, List<String> successColors) {
-        super(id, "Final Task", description, null, null, null, null);
+        super(id, "Final Task", description, null, null, null);
         this.successColors = successColors;
     }
 
