@@ -4,7 +4,7 @@
 
 ## Abstraktná syntax
 
-Model jazyka vyjadrený vo forme [diagramu tried](escape-room/escape_room.svg). 
+Model jazyka vyjadrený vo forme [diagramu tried](escape_room.pdf). 
 Koreňový pojem [EscapeRoom](escape-room/src/Interfaces/EscapeRoom.java) je vyznačený červenou farbou.
 
 Abstraktnú syntax zapísaná v EBNF:
