@@ -17,7 +17,7 @@ Abstraktnú syntax zapísaná v EBNF:
     TimeLimit -> int
     Task -> String 
     FinalTask -> String
-    Hint -> Description String
+    Hint -> String
     Solution -> String | int
     TaskType -> LogicPuzzle | VoicePuzzle | CodePuzzle | RiddlePuzzle
 ```
