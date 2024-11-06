@@ -9,14 +9,16 @@ Koreňový pojem [EscapeRoom](escape-room/src/Interfaces/EscapeRoom.java) je vyz
 
 Abstraktnú syntax zapísaná v EBNF:
 ```
-    EscapeRoom -> Name String WelcomeMessage String EscapeMessage String Room+
-    Room -> Name String Description String TimeLimit int Task+ FinalTask
-    Task -> Index int Name String Description String TaskType Type Solution Solution
-    TaskDetails String SuccessColor String Hint*
-        
-    FinalTask -> Id int Description String SuccessColors list
+    EscapeRoom -> String 
+    WelcomeMessage -> String 
+    EscapeMessage -> String
+    Room -> String 
+    Description -> String 
+    TimeLimit -> int
+    Task -> String 
+    FinalTask -> String
     Hint -> Description String
-    Solution -> CorrectAnswer String | int
+    Solution -> String | int
     TaskType -> LogicPuzzle | VoicePuzzle | CodePuzzle | RiddlePuzzle
 ```
 
