@@ -13,8 +13,7 @@ Abstraktnú syntax zapísaná v EBNF:
     Room -> Name String Description String TimeLimit int Task+ FinalTask
     Task -> Index int Name String Description String TaskType Type Solution Solution
     TaskDetails String SuccessColor String Hint*
-    Light -> String
-    
+        
     FinalTask -> Id int Description String SuccessColors list
     Hint -> Description String
     Solution -> CorrectAnswer String | int
