@@ -33,6 +33,8 @@ Validácia je súčasťou [EscapeRoomBuild](escape-room/src/builder/EscapeRoomBu
 - null a prázdnych reťazcov
 - každá Room má kladný časový limit
 - ID úloh (Task) sú jedinečné v rámci Room
+- výskyt hintov pri každom tasku
+- výskyt finalTask a Task v Room
 
 ## Konkrétna syntax
 
