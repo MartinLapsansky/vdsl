@@ -9,7 +9,6 @@ Koreňový pojem [EscapeRoom](escape-room/src/Interfaces/EscapeRoom.java) je vyz
 
 Abstraktnú syntax zapísaná v EBNF:
 ```
-    EscapeRoom -> String 
     WelcomeMessage -> String 
     EscapeMessage -> String
     Room -> String 
