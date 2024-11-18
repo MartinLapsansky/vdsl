@@ -1,4 +1,4 @@
-package model;
+package org.example.escaperoomspring.models;
 
 import java.util.List;
 
@@ -26,6 +26,6 @@ public class FinalTask extends Task {
             }
         }
 
-        return true; // All colors match
+        return true;
     }
 }

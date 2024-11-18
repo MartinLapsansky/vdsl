@@ -1,32 +1,49 @@
-package builder;
+package org.example.escaperoomspring.builder;
 
-import Interfaces.EscapeRoom;
-import model.*;
-import semantics.GameInterpreter;
+import org.example.escaperoomspring.interfaces.EscapeRoom;
+import org.example.escaperoomspring.models.*;
+import org.example.escaperoomspring.semantics.GameInterpreter;
+import org.example.escaperoomspring.services.GameService;
+import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+@Component
 public class EscapeRoomBuild implements EscapeRoom {
     private String welcomeMessage;
     private String escapeMessage;
     private List<Room> rooms;
     private int currentRoomIndex;
+    private  List<Task> tasks;
 
     private GameInterpreter gameInterpreter;
+    private GameService gameService;
 
-    // Constructor
+
     public EscapeRoomBuild(EscapeRoomBuilder builder) {
         this.welcomeMessage = builder.welcomeMessage;
         this.escapeMessage = builder.escapeMessage;
         this.rooms = builder.rooms;
+        this.tasks = builder.tasks;
         this.currentRoomIndex = 0;
-        this.gameInterpreter = new GameInterpreter(this);
+        this.gameInterpreter = new GameInterpreter(gameService);
     }
 
     @Override
     public EscapeRoom addRoom(Room room) {
         this.rooms.add(room);
         return this;
+    }
+
+    @Override
+    public List<Task> getTasks() {
+        return tasks;
+    }
+    public void addTask(Task task) {
+        tasks.add(task);
     }
 
     public Room getCurrentRoom() {
@@ -55,12 +72,13 @@ public class EscapeRoomBuild implements EscapeRoom {
     public void play() {
         gameInterpreter.startGame();
     }
-
+    @Component
     public static class EscapeRoomBuilder {
         private String welcomeMessage;
         private String escapeMessage;
         private List<Room> rooms = new ArrayList<>();
         private RoomBuilder currentRoomBuilder;
+        private List<Task> tasks = new ArrayList<>();
 
         public EscapeRoomBuilder setWelcomeMessage(String welcomeMessage) {
             this.welcomeMessage = welcomeMessage;
@@ -127,8 +145,15 @@ public class EscapeRoomBuild implements EscapeRoom {
             return this;
         }
 
-        public TaskBuilder addLight(String lightColor) {
-            task.addLight(lightColor);
+//        public TaskBuilder addLight(String lightColor) {
+//            task.addLight(lightColor);
+//            return this;
+//        }
+
+        public TaskBuilder lightColorSequence(String... colors) {
+            for (String color : colors) {
+                task.addLight(color);
+            }
             return this;
         }
 

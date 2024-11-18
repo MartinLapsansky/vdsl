@@ -1,4 +1,4 @@
-package model;
+package org.example.escaperoomspring.models;
 
 public class Solution {
     private String correctAnswer;

@@ -1,4 +1,4 @@
-package model;
+package org.example.escaperoomspring.models;
 
 public class Hint {
     private String hint;

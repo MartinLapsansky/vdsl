@@ -1,4 +1,4 @@
-package model;
+package org.example.escaperoomspring.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,6 @@ public class Room {
     private List<String> successColors;
     private Task finalTask;
 
-    // Constructor
     public Room(int timeLimit, String name, String description) {
         this.timeLimit = timeLimit;
         this.name = name;
@@ -24,13 +23,11 @@ public class Room {
         this.successColors = new ArrayList<>();
     }
 
-    // Method to add a task (returns this for method chaining)
     public Room addTask(Task task) {
         this.tasks.add(task);
         return this;
     }
 
-    // Getters
     public String getDescription() {
         return description;
     }

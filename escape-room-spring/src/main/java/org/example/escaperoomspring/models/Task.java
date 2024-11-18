@@ -1,4 +1,4 @@
-package model;
+package org.example.escaperoomspring.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class Task {
         RIDDLE_PUZZLE
     }
 
-    public Task(int index, String name, String description, taskType type,String taskDetails, String successColor) {
+    public Task(int index, String name, String description, taskType type, String taskDetails, String successColor) {
         this.index = index; // Initialize the index
         this.name = name;
         this.description = description;
@@ -63,6 +63,11 @@ public class Task {
     public List<String> getLightSequence() {
         return lightSequence;
     }
+
+    public void setLightSequence(List<String> lightSequence) {
+        this.lightSequence = lightSequence;
+    }
+
     public String getSuccessColor() {
         return successColor;
     }
