@@ -1,0 +1,25 @@
+escapeRoom
+    welcomeMessage "Welcome to the mysterious escape room adventure!"
+    escapeMessage "You've successfully escaped the room!"
+
+    room 120 "Entrance Hall"
+        description "Dark hall with ancient paintings on the wall."
+
+        task 1 "Find the Code"
+            description "Complete the sequence to unlock the door!"
+            LOGIC_PUZZLE
+            hint "The sequence is Fibonacci."
+            solution "21"
+            taskDetails "The sequence is: 0, 1, 1, 2, 3, 5, 8, 13... What is the next number?"
+            3
+            successColor "Red"
+
+        task 2 "Light Memory Challenge"
+            description "Remember the light sequence carefully."
+            LIGHT_PUZZLE
+            hint "color of grass"
+            solution "green"
+            taskDetails "Which of the color was displayed after the red?"
+            3
+            lightSequence "Red, Green, Blue"
+            successColor "Green"
