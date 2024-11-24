@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/mqtt")
 public class MqttController {
 
-    @Autowired
+    /*@Autowired
     public MqttController(MqttService mqttService) {
-    }
+    }*/
 
 }
 

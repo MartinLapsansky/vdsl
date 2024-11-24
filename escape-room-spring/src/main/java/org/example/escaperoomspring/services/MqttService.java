@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public class MqttService {
-    private MqttClient client;
+    /*private MqttClient client;
 
     public MqttService() throws MqttException {
         try {
@@ -53,7 +53,7 @@ public class MqttService {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
 
 }

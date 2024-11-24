@@ -29,6 +29,7 @@ public class EscapeRoomBuild implements EscapeRoom {
         this.rooms = builder.rooms;
         this.tasks = builder.tasks;
         this.currentRoomIndex = 0;
+        this.gameService = new GameService(this);
         this.gameInterpreter = new GameInterpreter(gameService);
     }
 

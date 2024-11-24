@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class EscapeRoomService {
 
-    private final MqttService mqttService;
+    //private final MqttService mqttService;
 
-    public EscapeRoomService(MqttService mqttService) {
+    /*public EscapeRoomService(MqttService mqttService) {
         this.mqttService = mqttService;
-    }
+    }*/
 
     public void startGame() throws MqttException {
         EscapeRoomBuild escapeRoom = new EscapeRoomBuild.EscapeRoomBuilder()
@@ -33,7 +33,7 @@ public class EscapeRoomService {
 
         escapeRoom.validate();
 
-        mqttService.publishLightSequence(escapeRoom.getTasks().get(1).getLightSequence());
+        //mqttService.publishLightSequence(escapeRoom.getTasks().get(1).getLightSequence());
 
         escapeRoom.play();
     }
