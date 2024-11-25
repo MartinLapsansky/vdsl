@@ -4,19 +4,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.escaperoomspring.antlr4.*;
-import org.example.escaperoomspring.models.EscapeRoom;
 import org.example.escaperoomspring.builder.EscapeRoomBuild;
+import org.example.escaperoomspring.models.Task;
 
 public class EscaperoomParserListener implements EscaperoomListener{
-    /*private EscapeRoom escapeRoom;
-
-    public EscapeRoom getEscapeRoom() {
-        return escapeRoom;
-    }*/
-
-    //private EscapeRoomBuild escapeRoom = new EscapeRoomBuild();;
-
-    //public EscapeRoomBuild getEscapeRoom() {return escapeRoom;}
 
     private EscapeRoomBuild.EscapeRoomBuilder builder;
 
@@ -62,12 +53,50 @@ public class EscaperoomParserListener implements EscaperoomListener{
 
     @Override
     public void enterRoom(EscaperoomParser.RoomContext ctx) {
+
+        //TODO:final task*/
+
         String name = ctx.name.getText().replaceAll("\"", "");
-        String description = ctx.description().getText().replaceAll("\"", "");
+        String description = ctx.description().getText().replaceAll("description", "")
+                                                        .replaceAll("\"", "");
         int timeLimit = Integer.parseInt(ctx.timeLimit.getText());
-        String finalTask = ctx.finalTask().getText().replaceAll("\"", "");
-        builder.addRoom(name, description, timeLimit);
-        //TODO:final task
+
+        EscapeRoomBuild.RoomBuilder roomBuilder = builder.addRoom(name, description, timeLimit);
+
+        for (EscaperoomParser.TaskContext taskCtx : ctx.task()) {
+            EscapeRoomBuild.TaskBuilder taskBuilder = roomBuilder.addTask(
+                    Integer.parseInt(taskCtx.index.getText()),
+                    taskCtx.name.getText(),
+                    taskCtx.description().getText()
+                                .replaceAll("description", "")
+                                .replaceAll("\"", ""),
+                    Task.taskType.valueOf(taskCtx.type().getText()),
+                    taskCtx.taskDetails().getText()
+                                .replaceAll("taskDetails", "")
+                                .replaceAll("\"", ""),
+                    taskCtx.successColor().getText()
+                                .replaceAll("successColor", "")
+                                .replaceAll("\"", "")
+            );
+            //System.out.println("sol: " +taskCtx.solution().getText().replaceAll("solution", "").replaceAll("\"", ""));
+            //System.out.println("hint: " +taskCtx.hint().getText().replaceAll("hint", "").replaceAll("\"", ""));
+
+            // Finish the task
+            taskBuilder
+                .addSolution(
+                    taskCtx.solution().getText()
+                        .replaceAll("solution", "")
+                        .replaceAll("\"", "")
+                )
+                .addHint(
+                    taskCtx.hint().getText()
+                        .replaceAll("hint", "")
+                        .replaceAll("\"", "")
+                )
+                .finishTask();
+        }
+
+        roomBuilder.finishRoom();
     }
 
     @Override
@@ -137,7 +166,8 @@ public class EscaperoomParserListener implements EscaperoomListener{
 
     @Override
     public void enterHint(EscaperoomParser.HintContext ctx) {
-
+        /*currentHint = ctx.getText().replaceAll("\"", "");
+        System.out.println("current hint: "+currentHint);*/
     }
 
     @Override
@@ -147,7 +177,8 @@ public class EscaperoomParserListener implements EscaperoomListener{
 
     @Override
     public void enterSolution(EscaperoomParser.SolutionContext ctx) {
-
+       /* currentSolution = ctx.getText().replaceAll("\"", "");
+        System.out.println("current sol: " + currentSolution);*/
     }
 
     @Override

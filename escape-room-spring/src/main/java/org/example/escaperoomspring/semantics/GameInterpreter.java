@@ -20,11 +20,14 @@ public class GameInterpreter {
         System.out.println(gameService.startGame());
         List<String> overallSuccessColors = new ArrayList<>();
 
+        System.out.println("is game over: "+gameService.isGameOver());
         while (!gameService.isGameOver()) {
             Room currentRoom = gameService.escapeRoom.getRooms().get(gameService.escapeRoom.getCurrentRoomIndex());
+            //System.out.println("currentRoom: "+currentRoom);
             System.out.println(gameService.enterRoom());
 
             for (Task task : currentRoom.getTasks()) {
+                //System.out.println("task name: "+task.getName());
                 System.out.println(gameService.handleTask(task));
             }
 

@@ -28,6 +28,10 @@ public class GameService {
         return "You are now in: " + currentRoom.getDescription();
     }
 
+    public Room getCurrentRoom() {
+        return escapeRoom.getRooms().get(escapeRoom.getCurrentRoomIndex());
+    }
+
     public String handleTask(Task task) {
         StringBuilder result = new StringBuilder();
         AtomicBoolean taskCompleted = new AtomicBoolean(false);
@@ -36,18 +40,25 @@ public class GameService {
         result.append("Task Name: ").append(task.getName()).append("\n")
                 .append("Task Description: ").append(task.getDescription()).append("\n")
                 .append("Puzzle Details: ").append(task.getPuzzleDetails()).append("\n");
+        //System.out.print(result);
 
         while (!taskCompleted.get()) {
             result.append("\nEnter your answer or type 'hint' for a hint: ");
+            System.out.print(result);
+
             String userInput = scanner.nextLine().trim();
 
             if (userInput.isEmpty()) {
                 result.append("Please enter a valid answer or request a hint.\n");
             } else if (userInput.equalsIgnoreCase("hint")) {
+                //result.append("Hint: ").append(task.getHint()).append("\n");
+                result.setLength(0);
                 result.append("Hint: ").append(task.getHint()).append("\n");
             } else {
                 if (task.execute(userInput)) {
+                    result.setLength(0);
                     result.append("Correct! Moving to the next challenge...\n");
+                    getCurrentRoom().incrementSolvedTasks();
                     taskCompleted.set(true);
                 } else {
                     result.append("Incorrect! Try again or ask for a hint.\n");
@@ -78,6 +89,8 @@ public class GameService {
     }
 
     public boolean isGameOver() {
+        //System.out.println("currentIndex: "+escapeRoom.getCurrentRoomIndex());
+        //System.out.println("no of rooms: "+escapeRoom.getRooms().size());
         return escapeRoom.getCurrentRoomIndex() >= escapeRoom.getRooms().size();
     }
 }

@@ -88,6 +88,10 @@ public class Task {
         return attempts;
     }
 
+    public taskType getType() {
+        return type;
+    }
+
     public int getIndex() {
         return index;
     }
