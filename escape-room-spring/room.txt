@@ -23,3 +23,5 @@ escapeRoom
             3
             lightSequence "Red, Green, Blue"
             successColor "Green"
+
+        finalTask "Red Green"

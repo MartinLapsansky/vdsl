@@ -20,7 +20,7 @@ public class EscaperoomParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
 		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
-		STRING=18, WS=19, INT=20, BOOL=21, LONG=22;
+		STRING=18, WS=19, INT=20;
 	public static final int
 		RULE_escaperoom = 0, RULE_welcomeMessage = 1, RULE_escapeMessage = 2, 
 		RULE_room = 3, RULE_description = 4, RULE_finalTask = 5, RULE_task = 6, 
@@ -47,7 +47,7 @@ public class EscaperoomParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, "STRING", "WS", "INT", "BOOL", "LONG"
+			null, null, null, null, null, null, "STRING", "WS", "INT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -103,25 +103,17 @@ public class EscaperoomParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class EscaperoomContext extends ParserRuleContext {
-		public Token currentRoomIndex;
 		public WelcomeMessageContext welcomeMessage() {
 			return getRuleContext(WelcomeMessageContext.class,0);
 		}
 		public EscapeMessageContext escapeMessage() {
 			return getRuleContext(EscapeMessageContext.class,0);
 		}
-		public TerminalNode INT() { return getToken(EscaperoomParser.INT, 0); }
 		public List<RoomContext> room() {
 			return getRuleContexts(RoomContext.class);
 		}
 		public RoomContext room(int i) {
 			return getRuleContext(RoomContext.class,i);
-		}
-		public List<TaskContext> task() {
-			return getRuleContexts(TaskContext.class);
-		}
-		public TaskContext task(int i) {
-			return getRuleContext(TaskContext.class,i);
 		}
 		public EscaperoomContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -169,22 +161,6 @@ public class EscaperoomParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==T__3 );
-			setState(36);
-			((EscaperoomContext)_localctx).currentRoomIndex = match(INT);
-			setState(38); 
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			do {
-				{
-				{
-				setState(37);
-				task();
-				}
-				}
-				setState(40); 
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-			} while ( _la==T__6 );
 			}
 		}
 		catch (RecognitionException re) {
@@ -226,9 +202,9 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(42);
+			setState(36);
 			match(T__1);
-			setState(43);
+			setState(37);
 			match(STRING);
 			}
 		}
@@ -271,9 +247,9 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(45);
+			setState(39);
 			match(T__2);
-			setState(46);
+			setState(40);
 			match(STRING);
 			}
 		}
@@ -292,27 +268,19 @@ public class EscaperoomParser extends Parser {
 	public static class RoomContext extends ParserRuleContext {
 		public Token timeLimit;
 		public Token name;
-		public Token solvedTasksCount;
-		public Token hintsTaken;
 		public DescriptionContext description() {
 			return getRuleContext(DescriptionContext.class,0);
 		}
-		public SuccessColorsContext successColors() {
-			return getRuleContext(SuccessColorsContext.class,0);
-		}
-		public FinalTaskContext finalTask() {
-			return getRuleContext(FinalTaskContext.class,0);
-		}
-		public List<TerminalNode> INT() { return getTokens(EscaperoomParser.INT); }
-		public TerminalNode INT(int i) {
-			return getToken(EscaperoomParser.INT, i);
-		}
+		public TerminalNode INT() { return getToken(EscaperoomParser.INT, 0); }
 		public TerminalNode STRING() { return getToken(EscaperoomParser.STRING, 0); }
 		public List<TaskContext> task() {
 			return getRuleContexts(TaskContext.class);
 		}
 		public TaskContext task(int i) {
 			return getRuleContext(TaskContext.class,i);
+		}
+		public FinalTaskContext finalTask() {
+			return getRuleContext(FinalTaskContext.class,0);
 		}
 		public RoomContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -340,36 +308,38 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(48);
+			setState(42);
 			match(T__3);
-			setState(49);
+			setState(43);
 			((RoomContext)_localctx).timeLimit = match(INT);
-			setState(50);
+			setState(44);
 			((RoomContext)_localctx).name = match(STRING);
-			setState(51);
+			setState(45);
 			description();
-			setState(53); 
+			setState(47); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(52);
+				setState(46);
 				task();
 				}
 				}
-				setState(55); 
+				setState(49); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==T__6 );
-			setState(57);
-			((RoomContext)_localctx).solvedTasksCount = match(INT);
-			setState(58);
-			((RoomContext)_localctx).hintsTaken = match(INT);
-			setState(59);
-			successColors();
-			setState(60);
-			finalTask();
+			setState(52);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==T__5) {
+				{
+				setState(51);
+				finalTask();
+				}
+			}
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -411,9 +381,9 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(62);
+			setState(54);
 			match(T__4);
-			setState(63);
+			setState(55);
 			match(STRING);
 			}
 		}
@@ -458,9 +428,9 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(65);
+			setState(57);
 			match(T__5);
-			setState(66);
+			setState(58);
 			successColors();
 			}
 		}
@@ -535,39 +505,39 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(68);
+			setState(60);
 			match(T__6);
-			setState(69);
+			setState(61);
 			((TaskContext)_localctx).index = match(INT);
-			setState(70);
+			setState(62);
 			((TaskContext)_localctx).name = match(STRING);
-			setState(71);
+			setState(63);
 			description();
-			setState(72);
+			setState(64);
 			type();
-			setState(73);
+			setState(65);
 			hint();
-			setState(74);
+			setState(66);
 			solution();
-			setState(75);
+			setState(67);
 			taskDetails();
-			setState(76);
+			setState(68);
 			((TaskContext)_localctx).attempts = match(INT);
-			setState(80);
+			setState(72);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__15) {
 				{
 				{
-				setState(77);
+				setState(69);
 				lightSequence();
 				}
 				}
-				setState(82);
+				setState(74);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(83);
+			setState(75);
 			successColor();
 			}
 		}
@@ -610,9 +580,9 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(85);
+			setState(77);
 			match(T__7);
-			setState(86);
+			setState(78);
 			match(STRING);
 			}
 		}
@@ -659,17 +629,17 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(89); 
+			setState(81); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(88);
+				setState(80);
 				match(STRING);
 				}
 				}
-				setState(91); 
+				setState(83); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==STRING );
@@ -714,7 +684,7 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(93);
+			setState(85);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 15872L) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -769,19 +739,19 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(95);
+			setState(87);
 			match(T__13);
-			setState(97); 
+			setState(89); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(96);
+				setState(88);
 				match(STRING);
 				}
 				}
-				setState(99); 
+				setState(91); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==STRING );
@@ -827,9 +797,9 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(101);
+			setState(93);
 			match(T__14);
-			setState(102);
+			setState(94);
 			((SolutionContext)_localctx).correctAnswer = match(STRING);
 			}
 		}
@@ -876,19 +846,19 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(104);
+			setState(96);
 			match(T__15);
-			setState(106); 
+			setState(98); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(105);
+				setState(97);
 				match(STRING);
 				}
 				}
-				setState(108); 
+				setState(100); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==STRING );
@@ -933,9 +903,9 @@ public class EscaperoomParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(110);
+			setState(102);
 			match(T__16);
-			setState(111);
+			setState(103);
 			match(STRING);
 			}
 		}
@@ -951,66 +921,61 @@ public class EscaperoomParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0016r\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0014j\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
 		"\f\u0007\f\u0002\r\u0007\r\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000"+
-		"\u0004\u0000!\b\u0000\u000b\u0000\f\u0000\"\u0001\u0000\u0001\u0000\u0004"+
-		"\u0000\'\b\u0000\u000b\u0000\f\u0000(\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0003"+
-		"\u0001\u0003\u0001\u0003\u0004\u00036\b\u0003\u000b\u0003\f\u00037\u0001"+
-		"\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0004\u0001"+
-		"\u0004\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0006\u0001"+
-		"\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001"+
-		"\u0006\u0001\u0006\u0001\u0006\u0005\u0006O\b\u0006\n\u0006\f\u0006R\t"+
-		"\u0006\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
-		"\b\u0004\bZ\b\b\u000b\b\f\b[\u0001\t\u0001\t\u0001\n\u0001\n\u0004\nb"+
-		"\b\n\u000b\n\f\nc\u0001\u000b\u0001\u000b\u0001\u000b\u0001\f\u0001\f"+
-		"\u0004\fk\b\f\u000b\f\f\fl\u0001\r\u0001\r\u0001\r\u0001\r\u0000\u0000"+
-		"\u000e\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018"+
-		"\u001a\u0000\u0001\u0001\u0000\t\rj\u0000\u001c\u0001\u0000\u0000\u0000"+
-		"\u0002*\u0001\u0000\u0000\u0000\u0004-\u0001\u0000\u0000\u0000\u00060"+
-		"\u0001\u0000\u0000\u0000\b>\u0001\u0000\u0000\u0000\nA\u0001\u0000\u0000"+
-		"\u0000\fD\u0001\u0000\u0000\u0000\u000eU\u0001\u0000\u0000\u0000\u0010"+
-		"Y\u0001\u0000\u0000\u0000\u0012]\u0001\u0000\u0000\u0000\u0014_\u0001"+
-		"\u0000\u0000\u0000\u0016e\u0001\u0000\u0000\u0000\u0018h\u0001\u0000\u0000"+
-		"\u0000\u001an\u0001\u0000\u0000\u0000\u001c\u001d\u0005\u0001\u0000\u0000"+
-		"\u001d\u001e\u0003\u0002\u0001\u0000\u001e \u0003\u0004\u0002\u0000\u001f"+
-		"!\u0003\u0006\u0003\u0000 \u001f\u0001\u0000\u0000\u0000!\"\u0001\u0000"+
-		"\u0000\u0000\" \u0001\u0000\u0000\u0000\"#\u0001\u0000\u0000\u0000#$\u0001"+
-		"\u0000\u0000\u0000$&\u0005\u0014\u0000\u0000%\'\u0003\f\u0006\u0000&%"+
-		"\u0001\u0000\u0000\u0000\'(\u0001\u0000\u0000\u0000(&\u0001\u0000\u0000"+
-		"\u0000()\u0001\u0000\u0000\u0000)\u0001\u0001\u0000\u0000\u0000*+\u0005"+
-		"\u0002\u0000\u0000+,\u0005\u0012\u0000\u0000,\u0003\u0001\u0000\u0000"+
-		"\u0000-.\u0005\u0003\u0000\u0000./\u0005\u0012\u0000\u0000/\u0005\u0001"+
-		"\u0000\u0000\u000001\u0005\u0004\u0000\u000012\u0005\u0014\u0000\u0000"+
-		"23\u0005\u0012\u0000\u000035\u0003\b\u0004\u000046\u0003\f\u0006\u0000"+
-		"54\u0001\u0000\u0000\u000067\u0001\u0000\u0000\u000075\u0001\u0000\u0000"+
-		"\u000078\u0001\u0000\u0000\u000089\u0001\u0000\u0000\u00009:\u0005\u0014"+
-		"\u0000\u0000:;\u0005\u0014\u0000\u0000;<\u0003\u0010\b\u0000<=\u0003\n"+
-		"\u0005\u0000=\u0007\u0001\u0000\u0000\u0000>?\u0005\u0005\u0000\u0000"+
-		"?@\u0005\u0012\u0000\u0000@\t\u0001\u0000\u0000\u0000AB\u0005\u0006\u0000"+
-		"\u0000BC\u0003\u0010\b\u0000C\u000b\u0001\u0000\u0000\u0000DE\u0005\u0007"+
-		"\u0000\u0000EF\u0005\u0014\u0000\u0000FG\u0005\u0012\u0000\u0000GH\u0003"+
-		"\b\u0004\u0000HI\u0003\u0012\t\u0000IJ\u0003\u0014\n\u0000JK\u0003\u0016"+
-		"\u000b\u0000KL\u0003\u000e\u0007\u0000LP\u0005\u0014\u0000\u0000MO\u0003"+
-		"\u0018\f\u0000NM\u0001\u0000\u0000\u0000OR\u0001\u0000\u0000\u0000PN\u0001"+
-		"\u0000\u0000\u0000PQ\u0001\u0000\u0000\u0000QS\u0001\u0000\u0000\u0000"+
-		"RP\u0001\u0000\u0000\u0000ST\u0003\u001a\r\u0000T\r\u0001\u0000\u0000"+
-		"\u0000UV\u0005\b\u0000\u0000VW\u0005\u0012\u0000\u0000W\u000f\u0001\u0000"+
-		"\u0000\u0000XZ\u0005\u0012\u0000\u0000YX\u0001\u0000\u0000\u0000Z[\u0001"+
-		"\u0000\u0000\u0000[Y\u0001\u0000\u0000\u0000[\\\u0001\u0000\u0000\u0000"+
-		"\\\u0011\u0001\u0000\u0000\u0000]^\u0007\u0000\u0000\u0000^\u0013\u0001"+
-		"\u0000\u0000\u0000_a\u0005\u000e\u0000\u0000`b\u0005\u0012\u0000\u0000"+
-		"a`\u0001\u0000\u0000\u0000bc\u0001\u0000\u0000\u0000ca\u0001\u0000\u0000"+
-		"\u0000cd\u0001\u0000\u0000\u0000d\u0015\u0001\u0000\u0000\u0000ef\u0005"+
-		"\u000f\u0000\u0000fg\u0005\u0012\u0000\u0000g\u0017\u0001\u0000\u0000"+
-		"\u0000hj\u0005\u0010\u0000\u0000ik\u0005\u0012\u0000\u0000ji\u0001\u0000"+
-		"\u0000\u0000kl\u0001\u0000\u0000\u0000lj\u0001\u0000\u0000\u0000lm\u0001"+
-		"\u0000\u0000\u0000m\u0019\u0001\u0000\u0000\u0000no\u0005\u0011\u0000"+
-		"\u0000op\u0005\u0012\u0000\u0000p\u001b\u0001\u0000\u0000\u0000\u0007"+
-		"\"(7P[cl";
+		"\u0004\u0000!\b\u0000\u000b\u0000\f\u0000\"\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001"+
+		"\u0003\u0001\u0003\u0001\u0003\u0004\u00030\b\u0003\u000b\u0003\f\u0003"+
+		"1\u0001\u0003\u0003\u00035\b\u0003\u0001\u0004\u0001\u0004\u0001\u0004"+
+		"\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0006"+
+		"\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006"+
+		"\u0001\u0006\u0005\u0006G\b\u0006\n\u0006\f\u0006J\t\u0006\u0001\u0006"+
+		"\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001\b\u0004\bR\b\b"+
+		"\u000b\b\f\bS\u0001\t\u0001\t\u0001\n\u0001\n\u0004\nZ\b\n\u000b\n\f\n"+
+		"[\u0001\u000b\u0001\u000b\u0001\u000b\u0001\f\u0001\f\u0004\fc\b\f\u000b"+
+		"\f\f\fd\u0001\r\u0001\r\u0001\r\u0001\r\u0000\u0000\u000e\u0000\u0002"+
+		"\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u0000\u0001"+
+		"\u0001\u0000\t\rb\u0000\u001c\u0001\u0000\u0000\u0000\u0002$\u0001\u0000"+
+		"\u0000\u0000\u0004\'\u0001\u0000\u0000\u0000\u0006*\u0001\u0000\u0000"+
+		"\u0000\b6\u0001\u0000\u0000\u0000\n9\u0001\u0000\u0000\u0000\f<\u0001"+
+		"\u0000\u0000\u0000\u000eM\u0001\u0000\u0000\u0000\u0010Q\u0001\u0000\u0000"+
+		"\u0000\u0012U\u0001\u0000\u0000\u0000\u0014W\u0001\u0000\u0000\u0000\u0016"+
+		"]\u0001\u0000\u0000\u0000\u0018`\u0001\u0000\u0000\u0000\u001af\u0001"+
+		"\u0000\u0000\u0000\u001c\u001d\u0005\u0001\u0000\u0000\u001d\u001e\u0003"+
+		"\u0002\u0001\u0000\u001e \u0003\u0004\u0002\u0000\u001f!\u0003\u0006\u0003"+
+		"\u0000 \u001f\u0001\u0000\u0000\u0000!\"\u0001\u0000\u0000\u0000\" \u0001"+
+		"\u0000\u0000\u0000\"#\u0001\u0000\u0000\u0000#\u0001\u0001\u0000\u0000"+
+		"\u0000$%\u0005\u0002\u0000\u0000%&\u0005\u0012\u0000\u0000&\u0003\u0001"+
+		"\u0000\u0000\u0000\'(\u0005\u0003\u0000\u0000()\u0005\u0012\u0000\u0000"+
+		")\u0005\u0001\u0000\u0000\u0000*+\u0005\u0004\u0000\u0000+,\u0005\u0014"+
+		"\u0000\u0000,-\u0005\u0012\u0000\u0000-/\u0003\b\u0004\u0000.0\u0003\f"+
+		"\u0006\u0000/.\u0001\u0000\u0000\u000001\u0001\u0000\u0000\u00001/\u0001"+
+		"\u0000\u0000\u000012\u0001\u0000\u0000\u000024\u0001\u0000\u0000\u0000"+
+		"35\u0003\n\u0005\u000043\u0001\u0000\u0000\u000045\u0001\u0000\u0000\u0000"+
+		"5\u0007\u0001\u0000\u0000\u000067\u0005\u0005\u0000\u000078\u0005\u0012"+
+		"\u0000\u00008\t\u0001\u0000\u0000\u00009:\u0005\u0006\u0000\u0000:;\u0003"+
+		"\u0010\b\u0000;\u000b\u0001\u0000\u0000\u0000<=\u0005\u0007\u0000\u0000"+
+		"=>\u0005\u0014\u0000\u0000>?\u0005\u0012\u0000\u0000?@\u0003\b\u0004\u0000"+
+		"@A\u0003\u0012\t\u0000AB\u0003\u0014\n\u0000BC\u0003\u0016\u000b\u0000"+
+		"CD\u0003\u000e\u0007\u0000DH\u0005\u0014\u0000\u0000EG\u0003\u0018\f\u0000"+
+		"FE\u0001\u0000\u0000\u0000GJ\u0001\u0000\u0000\u0000HF\u0001\u0000\u0000"+
+		"\u0000HI\u0001\u0000\u0000\u0000IK\u0001\u0000\u0000\u0000JH\u0001\u0000"+
+		"\u0000\u0000KL\u0003\u001a\r\u0000L\r\u0001\u0000\u0000\u0000MN\u0005"+
+		"\b\u0000\u0000NO\u0005\u0012\u0000\u0000O\u000f\u0001\u0000\u0000\u0000"+
+		"PR\u0005\u0012\u0000\u0000QP\u0001\u0000\u0000\u0000RS\u0001\u0000\u0000"+
+		"\u0000SQ\u0001\u0000\u0000\u0000ST\u0001\u0000\u0000\u0000T\u0011\u0001"+
+		"\u0000\u0000\u0000UV\u0007\u0000\u0000\u0000V\u0013\u0001\u0000\u0000"+
+		"\u0000WY\u0005\u000e\u0000\u0000XZ\u0005\u0012\u0000\u0000YX\u0001\u0000"+
+		"\u0000\u0000Z[\u0001\u0000\u0000\u0000[Y\u0001\u0000\u0000\u0000[\\\u0001"+
+		"\u0000\u0000\u0000\\\u0015\u0001\u0000\u0000\u0000]^\u0005\u000f\u0000"+
+		"\u0000^_\u0005\u0012\u0000\u0000_\u0017\u0001\u0000\u0000\u0000`b\u0005"+
+		"\u0010\u0000\u0000ac\u0005\u0012\u0000\u0000ba\u0001\u0000\u0000\u0000"+
+		"cd\u0001\u0000\u0000\u0000db\u0001\u0000\u0000\u0000de\u0001\u0000\u0000"+
+		"\u0000e\u0019\u0001\u0000\u0000\u0000fg\u0005\u0011\u0000\u0000gh\u0005"+
+		"\u0012\u0000\u0000h\u001b\u0001\u0000\u0000\u0000\u0007\"14HS[d";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

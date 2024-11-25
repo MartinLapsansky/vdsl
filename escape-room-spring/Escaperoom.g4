@@ -1,12 +1,12 @@
 grammar Escaperoom;
 
-escaperoom: 'escapeRoom' welcomeMessage escapeMessage room+ currentRoomIndex=INT task+;
+escaperoom: 'escapeRoom' welcomeMessage escapeMessage room+;
 
 welcomeMessage: 'welcomeMessage' STRING;
 
 escapeMessage: 'escapeMessage' STRING;
 
-room: 'room' timeLimit=INT name=STRING description task+ solvedTasksCount=INT hintsTaken=INT successColors finalTask;
+room: 'room' timeLimit=INT name=STRING description task+ finalTask?;
 
 description: 'description' STRING;
 
@@ -31,5 +31,3 @@ successColor: 'successColor' STRING;
 STRING: '"' (~["\r\n])* '"' ;
 WS: [ \t\r\n]+ -> skip;
 INT: [0-9]+ ;
-BOOL: 'true' | 'false';
-LONG: '-'? [0-9]+ ;

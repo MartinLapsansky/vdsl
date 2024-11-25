@@ -1,5 +1,6 @@
-package org.example.escaperoomspring.antlr4;
 // Generated from C:/Users/Admin/Documents/skola/5r/vdsl/escape-room-spring/Escaperoom.g4 by ANTLR 4.13.2
+package org.example.escaperoomspring.antlr4;
+
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
