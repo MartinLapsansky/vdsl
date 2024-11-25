@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.example.escaperoomspring.antlr4.*;
+import org.example.escaperoomspring.builder.EscapeRoomBuild;
 import org.example.escaperoomspring.parser.EscaperoomParserListener;
 import org.example.escaperoomspring.semantics.GameInterpreter;
 import org.example.escaperoomspring.services.GameService;
@@ -25,7 +26,8 @@ public class MainExternal {
         var listener = new EscaperoomParserListener();
         treeWalker.walk(listener, tree);
 
-        var escapeRoom = listener.getEscapeRoom();
+        //var escapeRoom = listener.getEscapeRoom();
+        EscapeRoomBuild escapeRoom = listener.getEscapeRoom();
 
         /* Validate a game model. */
         escapeRoom.validate();
@@ -37,6 +39,7 @@ public class MainExternal {
         }*/
 
         GameService escapeRoomService = new GameService(escapeRoom);
+        //new GameInterpreter(escapeRoom).startGame();
         new GameInterpreter(escapeRoomService).startGame();
     }
 }

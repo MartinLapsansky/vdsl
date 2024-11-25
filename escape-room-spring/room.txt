@@ -2,7 +2,7 @@ escapeRoom
     welcomeMessage "Welcome to the mysterious escape room adventure!"
     escapeMessage "You've successfully escaped the room!"
 
-    room 120 "Entrance Hall"
+    room 12 "Entrance Hall"
         description "Dark hall with ancient paintings on the wall."
 
         task 1 "Find the Code"

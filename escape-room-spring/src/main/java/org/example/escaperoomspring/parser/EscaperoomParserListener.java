@@ -4,13 +4,28 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.escaperoomspring.antlr4.*;
+import org.example.escaperoomspring.models.EscapeRoom;
 import org.example.escaperoomspring.builder.EscapeRoomBuild;
 
 public class EscaperoomParserListener implements EscaperoomListener{
-    private EscapeRoomBuild escapeRoom;
+    /*private EscapeRoom escapeRoom;
+
+    public EscapeRoom getEscapeRoom() {
+        return escapeRoom;
+    }*/
+
+    //private EscapeRoomBuild escapeRoom = new EscapeRoomBuild();;
+
+    //public EscapeRoomBuild getEscapeRoom() {return escapeRoom;}
+
+    private EscapeRoomBuild.EscapeRoomBuilder builder;
+
+    public EscaperoomParserListener() {
+        this.builder = new EscapeRoomBuild.EscapeRoomBuilder();
+    }
 
     public EscapeRoomBuild getEscapeRoom() {
-        return escapeRoom;
+        return builder.build();
     }
 
     @Override
@@ -25,7 +40,8 @@ public class EscaperoomParserListener implements EscaperoomListener{
 
     @Override
     public void enterWelcomeMessage(EscaperoomParser.WelcomeMessageContext ctx) {
-
+        String welcomeMessage = ctx.STRING().getText().replaceAll("\"", ""); // Remove quotes
+        builder.setWelcomeMessage(welcomeMessage);
     }
 
     @Override
@@ -35,7 +51,8 @@ public class EscaperoomParserListener implements EscaperoomListener{
 
     @Override
     public void enterEscapeMessage(EscaperoomParser.EscapeMessageContext ctx) {
-
+        String escapeMessage = ctx.STRING().getText().replaceAll("\"", ""); // Remove quotes
+        builder.setEscapeMessage(escapeMessage);
     }
 
     @Override
@@ -45,7 +62,12 @@ public class EscaperoomParserListener implements EscaperoomListener{
 
     @Override
     public void enterRoom(EscaperoomParser.RoomContext ctx) {
-
+        String name = ctx.name.getText().replaceAll("\"", "");
+        String description = ctx.description().getText().replaceAll("\"", "");
+        int timeLimit = Integer.parseInt(ctx.timeLimit.getText());
+        String finalTask = ctx.finalTask().getText().replaceAll("\"", "");
+        builder.addRoom(name, description, timeLimit);
+        //TODO:final task
     }
 
     @Override
