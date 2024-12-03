@@ -50,7 +50,7 @@ Ukážkové vety z jazyka:
 ## Sémantika
 
 Sémantika je definovaná pomocou:
-- interptetátora - trieda [GameInterpreter](escape-room/src/semantics/GameInterpreter.java)
+- interptetátora - trieda [GameInterpreter](escape-room-spring/src/main/java/org/example/escaperoomspring/semantics/GameInterpreter.java)
 
 ### Externý doménovo-špecifický jazyk
 
