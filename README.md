@@ -58,7 +58,7 @@ Konkrétna sytax je definovaná prostredníctvom gramatiky [EscapeRoom.g4](escap
 Strom odvodenia je spracovaný podľa vzoru Listener, trieda [EscaperoomParserListener](escape-room-spring/src/main/java/org/example/escaperoomspring/parser/EscaperoomParserListener.java).
 
 Ukážkové vety z jazyka:
-- Hra [escapeRoom](room1.txt)
+- Hra [escapeRoom](room.txt)
 
 ## Sémantika
 
