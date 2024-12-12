@@ -1,5 +1,6 @@
 package org.example.escaperoomspring.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FinalTask extends Task {
@@ -8,6 +9,13 @@ public class FinalTask extends Task {
     public FinalTask(int id, String description, List<String> successColors) {
         super(id, "Final Task", description, null, null, null);
         this.successColors = successColors;
+    }
+
+    public void addSuccessColors(String color) {
+        if (successColors == null) {
+            successColors = new ArrayList<>();
+        }
+        successColors.add(color);
     }
 
     public List<String> getSuccessColors() {

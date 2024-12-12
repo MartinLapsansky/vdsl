@@ -1,9 +1,11 @@
 package org.example.escaperoomspring.builder;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.example.escaperoomspring.interfaces.EscapeRoom;
 import org.example.escaperoomspring.models.*;
 import org.example.escaperoomspring.semantics.GameInterpreter;
 import org.example.escaperoomspring.services.GameService;
+import org.example.escaperoomspring.services.MqttService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -70,9 +72,10 @@ public class EscapeRoomBuild implements EscapeRoom {
         return escapeMessage;
     }
 
-    public void play() {
-        gameInterpreter.startGame();
+    public void play(MqttService mqttService) throws MqttException, InterruptedException {
+        gameInterpreter.startGame(mqttService);
     }
+
     @Component
     public static class EscapeRoomBuilder {
         private String welcomeMessage;
@@ -119,6 +122,7 @@ public class EscapeRoomBuild implements EscapeRoom {
 
         public TaskBuilder addTask(int index, String name, String description, Task.taskType type, String taskDetails, String successColor) {
             currentTaskBuilder = new TaskBuilder(this, index, name, description, type, taskDetails, successColor);
+            //this.addTask();
             return currentTaskBuilder;
         }
 

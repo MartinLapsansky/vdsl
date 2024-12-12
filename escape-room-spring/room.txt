@@ -2,26 +2,36 @@ escapeRoom
     welcomeMessage "Welcome to the mysterious escape room adventure!"
     escapeMessage "You've successfully escaped the room!"
 
-    room 12 "Entrance Hall"
-        description "Dark hall with ancient paintings on the wall."
+    room 1 "Entrance Hall"
+        description "openlab hall."
 
-        task 1 "Find the Code"
+        task 1 "Numbers sequence"
             description "Complete the sequence to unlock the door!"
             LOGIC_PUZZLE
             hint "The sequence is Fibonacci."
             solution "21"
             taskDetails "The sequence is: 0, 1, 1, 2, 3, 5, 8, 13... What is the next number?"
             3
-            successColor "Red"
+            successColor "purple"
 
         task 2 "Light Memory Challenge"
             description "Remember the light sequence carefully."
             LIGHT_PUZZLE
             hint "color of grass"
             solution "green"
-            taskDetails "Which of the color was displayed after the red?"
+            taskDetails "Which color was displayed after blue?"
             3
-            lightSequence "Red, Green, Blue"
+            lightSequence "blue Green red"
             successColor "Green"
+
+        task 3 "Light Memory Challenge 2"
+             description "Remember the light sequence carefully."
+             LIGHT_PUZZLE
+             hint "a fruit has the same name as this color"
+             solution "orange"
+             taskDetails "Which color was displayed after green?"
+             3
+             lightSequence "Red, Green, Orange"
+             successColor "Orange"
 
         finalTask "Red Green"

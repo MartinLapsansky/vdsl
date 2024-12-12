@@ -4,16 +4,21 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.example.escaperoomspring.antlr4.*;
 import org.example.escaperoomspring.builder.EscapeRoomBuild;
 import org.example.escaperoomspring.parser.EscaperoomParserListener;
 import org.example.escaperoomspring.semantics.GameInterpreter;
 import org.example.escaperoomspring.services.GameService;
+import org.example.escaperoomspring.services.MqttService;
 
 import java.io.IOException;
 
 public class MainExternal {
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) throws IOException, MqttException, InterruptedException {
+        MqttService mqttService = new MqttService();
+
         var lexer = new EscaperoomLexer(CharStreams.fromFileName("room.txt"));
 
         var tokens = new CommonTokenStream(lexer);
@@ -29,6 +34,7 @@ public class MainExternal {
         escapeRoom.validate();
 
         GameService escapeRoomService = new GameService(escapeRoom);
-        new GameInterpreter(escapeRoomService).startGame();
+        // TODO: figure out how to pass mqttService here
+        new GameInterpreter(escapeRoomService).startGame(mqttService);
     }
 }

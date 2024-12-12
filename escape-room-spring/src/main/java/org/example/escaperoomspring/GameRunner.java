@@ -15,7 +15,7 @@ public class GameRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws MqttException {
+    public void run(String... args) throws MqttException, InterruptedException {
         escapeRoomService.startGame();
     }
 }
