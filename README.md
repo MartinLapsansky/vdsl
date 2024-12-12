@@ -50,5 +50,19 @@ Ukážkové vety z jazyka:
 ## Sémantika
 
 Sémantika je definovaná pomocou:
-- interptetátora - trieda [GameInterpreter](escape-room/src/semantics/GameInterpreter.java)
+- interptetátora - trieda [GameInterpreter](escape-room-spring/src/main/java/org/example/escaperoomspring/semantics/GameInterpreter.java)
+
+### Externý doménovo-špecifický jazyk
+
+Konkrétna sytax je definovaná prostredníctvom gramatiky [EscapeRoom.g4](escape-room-spring/Escaperoom.g4) pre nástroj ANTLR 4.
+Strom odvodenia je spracovaný podľa vzoru Listener, trieda [EscaperoomParserListener](escape-room-spring/src/main/java/org/example/escaperoomspring/parser/EscaperoomParserListener.java).
+
+Ukážkové vety z jazyka:
+- Hra [escapeRoom](room.txt)
+
+## Sémantika
+
+Sémantika je definovaná pomocou:
+- interptetátora - trieda [GameInterpreter](escape-room-spring/src/main/java/org/example/escaperoomspring/semantics/GameInterpreter.java)
+
 
