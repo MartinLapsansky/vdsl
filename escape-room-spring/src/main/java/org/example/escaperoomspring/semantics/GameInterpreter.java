@@ -1,11 +1,12 @@
 package org.example.escaperoomspring.semantics;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.example.escaperoomspring.interfaces.MqttServiceInterface;
 import org.example.escaperoomspring.models.FinalTask;
 import org.example.escaperoomspring.models.Room;
 import org.example.escaperoomspring.models.Task;
 import org.example.escaperoomspring.services.GameService;
-import org.example.escaperoomspring.services.MqttService;
+import org.example.escaperoomspring.services.MockMqttService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ public class GameInterpreter {
         this.gameService = gameService;
     }
 
-    public void startGame(MqttService mqttService) throws MqttException, InterruptedException {
+    public void startGame(MqttServiceInterface mqttService) throws MqttException, InterruptedException {
         mqttService.publishSingleLight("none");
         System.out.println(gameService.startGame());
         List<String> overallSuccessColors = new ArrayList<>();
@@ -34,7 +35,7 @@ public class GameInterpreter {
                 System.out.println("task name: "+task.getName());
                 currentRoom.addSuccessColor(task.getSuccessColor());
                 System.out.println("task succ color: "+task.getSuccessColor());
-                System.out.println(gameService.handleTask(task, mqttService));
+                System.out.println(gameService.handleTask(task,"blue",mqttService));
             }
 
             if (gameService.isRoomComplete(currentRoom)) {
@@ -53,7 +54,7 @@ public class GameInterpreter {
         evaluateFinalChallenge(finalTask, mqttService);
     }
 
-    private void evaluateFinalChallenge(FinalTask finalTask, MqttService mqttService) throws MqttException {
+    private void evaluateFinalChallenge(FinalTask finalTask, MqttServiceInterface mqttService) throws MqttException {
         System.out.println("\nFinal Task: " + finalTask.getName());
         System.out.println("Description: " + finalTask.getDescription());
         //System.out.println("Colors to Remember: " + finalTask.getSuccessColors());

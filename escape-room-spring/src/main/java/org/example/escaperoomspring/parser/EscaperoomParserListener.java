@@ -5,14 +5,16 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.escaperoomspring.antlr4.*;
 import org.example.escaperoomspring.builder.EscapeRoomBuild;
+import org.example.escaperoomspring.interfaces.MqttServiceInterface;
 import org.example.escaperoomspring.models.Task;
+import org.example.escaperoomspring.services.MockMqttService;
 
 public class EscaperoomParserListener implements EscaperoomListener{
 
     private EscapeRoomBuild.EscapeRoomBuilder builder;
 
-    public EscaperoomParserListener() {
-        this.builder = new EscapeRoomBuild.EscapeRoomBuilder();
+    public EscaperoomParserListener(MqttServiceInterface mqttService) {
+        this.builder = new EscapeRoomBuild.EscapeRoomBuilder(mqttService);
     }
 
     public EscapeRoomBuild getEscapeRoom() {
@@ -53,51 +55,41 @@ public class EscaperoomParserListener implements EscaperoomListener{
 
     @Override
     public void enterRoom(EscaperoomParser.RoomContext ctx) {
+        if (ctx.description() != null && !ctx.description().isEmpty()) {
+            String name = ctx.name.getText().replaceAll("\"", "");
+            String description = ctx.description().getText().replaceAll("description", "").replaceAll("\"", "");
+            int timeLimit = Integer.parseInt(ctx.timeLimit.getText());
 
-        //TODO:final task*/
+            EscapeRoomBuild.RoomBuilder roomBuilder = builder.addRoom(name, description, timeLimit);
 
-        String name = ctx.name.getText().replaceAll("\"", "");
-        String description = ctx.description().getText().replaceAll("description", "")
-                                                        .replaceAll("\"", "");
-        int timeLimit = Integer.parseInt(ctx.timeLimit.getText());
+            for (EscaperoomParser.TaskContext taskCtx : ctx.task()) {
+                EscapeRoomBuild.TaskBuilder taskBuilder = roomBuilder.addTask(
+                        Integer.parseInt(taskCtx.index.getText()),
+                        taskCtx.name.getText(),
+                        taskCtx.description().getText().replaceAll("description", "").replaceAll("\"", ""),
+                        Task.taskType.valueOf(taskCtx.type().getText()),
+                        taskCtx.taskDetails().getText().replaceAll("taskDetails", "").replaceAll("\"", ""),
+                        taskCtx.successColor().getText().replaceAll("successColor", "").replaceAll("\"", "")
+                );
 
-        EscapeRoomBuild.RoomBuilder roomBuilder = builder.addRoom(name, description, timeLimit);
+                if (Task.taskType.valueOf(taskCtx.type().getText()) == Task.taskType.LIGHT_PUZZLE) {
+                    if (taskCtx.lightSequence() != null && !taskCtx.lightSequence().isEmpty()) {
+                        taskBuilder.lightColorSequence(taskCtx.lightSequence().get(0).getText());
+                    } else {
+                        System.err.println("Light sequence is empty.");
+                    }
+                }
 
-        for (EscaperoomParser.TaskContext taskCtx : ctx.task()) {
-            EscapeRoomBuild.TaskBuilder taskBuilder = roomBuilder.addTask(
-                    Integer.parseInt(taskCtx.index.getText()),
-                    taskCtx.name.getText(),
-                    taskCtx.description().getText()
-                                .replaceAll("description", "")
-                                .replaceAll("\"", ""),
-                    Task.taskType.valueOf(taskCtx.type().getText()),
-                    taskCtx.taskDetails().getText()
-                                .replaceAll("taskDetails", "")
-                                .replaceAll("\"", ""),
-                    taskCtx.successColor().getText()
-                                .replaceAll("successColor", "")
-                                .replaceAll("\"", "")
-            );
-            //System.out.println("sol: " +taskCtx.solution().getText().replaceAll("solution", "").replaceAll("\"", ""));
-            //System.out.println("hint: " +taskCtx.hint().getText().replaceAll("hint", "").replaceAll("\"", ""));
+                taskBuilder
+                        .addSolution(taskCtx.solution().getText().replaceAll("solution", "").replaceAll("\"", ""))
+                        .addHint(taskCtx.hint().getText().replaceAll("hint", "").replaceAll("\"", ""))
+                        .finishTask();
+            }
 
-            // Finish the task
-            taskBuilder
-                .lightColorSequence(taskCtx.lightSequence().get(0).getText())
-                .addSolution(
-                    taskCtx.solution().getText()
-                        .replaceAll("solution", "")
-                        .replaceAll("\"", "")
-                )
-                .addHint(
-                    taskCtx.hint().getText()
-                        .replaceAll("hint", "")
-                        .replaceAll("\"", "")
-                )
-                .finishTask();
+            roomBuilder.finishRoom();
+        } else {
+            System.err.println("Room details are empty.");
         }
-
-        roomBuilder.finishRoom();
     }
 
     @Override

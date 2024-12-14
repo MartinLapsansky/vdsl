@@ -2,21 +2,24 @@ package org.example.escaperoomspring.services;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.example.escaperoomspring.builder.EscapeRoomBuild;
+import org.example.escaperoomspring.interfaces.MqttServiceInterface;
 import org.example.escaperoomspring.models.FinalTask;
 import org.example.escaperoomspring.models.Room;
 import org.example.escaperoomspring.models.Task;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class GameService {
-    public EscapeRoomBuild escapeRoom;
 
-    public GameService(EscapeRoomBuild escapeRoom) {
+    public EscapeRoomBuild escapeRoom;
+    //(EscapeRoomBuild escapeRoom)
+    public GameService(@Qualifier("customEscapeRoomBuild") EscapeRoomBuild escapeRoom) {
         this.escapeRoom = escapeRoom;
     }
 
@@ -38,7 +41,7 @@ public class GameService {
         result.setLength(0);
     }
 
-    public String handleTask(Task task, MqttService mqttService) throws MqttException, InterruptedException {
+    public String handleTask(Task task, String answer, MqttServiceInterface mqttService) throws MqttException, InterruptedException {
         StringBuilder result = new StringBuilder();
         AtomicBoolean taskCompleted = new AtomicBoolean(false);
         Scanner scanner = new Scanner(System.in);
@@ -48,12 +51,12 @@ public class GameService {
                 .append("Puzzle Details: ").append(task.getPuzzleDetails());
         printClearResult(result);
 
-        if(task.getType() == Task.taskType.LIGHT_PUZZLE){
-            // sleep to allow user to prepare for lights checking
+        if (task.getType() == Task.taskType.LIGHT_PUZZLE) {
+            // Sleep to allow user to prepare for lights checking
             Thread.sleep(3000);
-            System.out.println("task light sequencce "+ task.getLightSequence());
+            System.out.println("Task light sequence: " + task.getLightSequence());
             mqttService.publishLightSequence(task.getLightSequence());
-            //TODO:ADD DELAY IF NEEDED
+            // TODO: Add delay if needed
         }
         mqttService.publishSingleLight("none");
 
@@ -66,7 +69,6 @@ public class GameService {
             if (userInput.isEmpty()) {
                 result.append("Please enter a valid answer or request a hint.\n");
             } else if (userInput.equalsIgnoreCase("hint")) {
-                //result.append("Hint: ").append(task.getHint()).append("\n");
                 result.setLength(0);
                 result.append("Hint: ").append(task.getHint()).append("\n");
             } else {
@@ -76,7 +78,6 @@ public class GameService {
                     int taskIndex = getCurrentRoom().getCurrentTasksIndex();
                     getCurrentRoom().incrementSolvedTasks();
                     taskCompleted.set(true);
-                    //System.out.println("taskIndex:"+ taskIndex);
                     String lightColor = getCurrentRoom().getTasks().get(taskIndex).getSuccessColor();
                     mqttService.publishSingleLight(lightColor);
                     result.append("\nCorrect! Moving to the next challenge...\n");

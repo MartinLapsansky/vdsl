@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task {
+    private int id;
     private int index; // Index for the task
     private String name;
     private String description;
@@ -48,6 +49,12 @@ public class Task {
             this.lightSequence = new ArrayList<>();
         }
     }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Task addLight(String lightColor) {
         if (this.type == taskType.LIGHT_PUZZLE && this.lightSequence != null) {
@@ -55,9 +62,12 @@ public class Task {
         }
         return this;
     }
-    public Task addSolution(Solution solution) {
+    public void addSolution(Solution solution) {
         this.solution = solution;
-        return this;
+    }
+
+    public Solution getSolution() {
+        return solution;
     }
 
     public List<String> getLightSequence() {
@@ -100,6 +110,8 @@ public class Task {
         hints.add(hint);
         return this;
     }
+
+
 
     public void startTask() {
         this.startTime = System.currentTimeMillis();
