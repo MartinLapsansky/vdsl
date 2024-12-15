@@ -11,7 +11,7 @@ public class Room {
     private int solvedTasksCount;
     private int hintsTaken;
     private List<String> successColors;
-    private Task finalTask;
+    private FinalTask finalTask;
 
     public Room(int timeLimit, String name, String description) {
         this.timeLimit = timeLimit;
@@ -74,11 +74,10 @@ public class Room {
         return solvedTasksCount;
     }
 
-    public Task getFinalTask() {
+    public FinalTask getFinalTask() {
         return finalTask;
     }
     public void setFinalTask(FinalTask finalTask) {
         this.finalTask = finalTask;
     }
-
 }

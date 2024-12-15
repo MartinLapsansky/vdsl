@@ -51,6 +51,7 @@ public class GameInterpreter {
         }
 
         FinalTask finalTask = gameService.prepareFinalTask(overallSuccessColors);
+        gameService.setFinalTask(finalTask);
         evaluateFinalChallenge(finalTask, mqttService);
     }
 

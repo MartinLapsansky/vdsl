@@ -24,7 +24,7 @@ public class EscapeRoomBuild implements EscapeRoom {
     private  List<Task> tasks;
 
     private GameInterpreter gameInterpreter;
-    private GameService gameService;
+    public GameService gameService;
 
     public EscapeRoomBuild(EscapeRoomBuilder builder, MqttServiceInterface mqttService) {
         this.welcomeMessage = builder.welcomeMessage;
@@ -45,11 +45,15 @@ public class EscapeRoomBuild implements EscapeRoom {
 
     @Override
     public List<Task> getTasks() {
-        // Assign unique IDs to tasks if not already assigned
         for (int i = 0; i < tasks.size(); i++) {
             tasks.get(i).setId(i);
         }
         return tasks;
+    }
+
+    public FinalTask getFinalTask() {
+        List<String> successColors = new ArrayList<>();
+        return new FinalTask(1, "Enter the colors displayed after finishing each task, in order, separated by spaces:", successColors);
     }
 
     public void addTask(Task task) {

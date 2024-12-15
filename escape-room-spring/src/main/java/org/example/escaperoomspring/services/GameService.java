@@ -18,6 +18,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class GameService {
 
     public EscapeRoomBuild escapeRoom;
+    private FinalTask finalTask;
+
     //(EscapeRoomBuild escapeRoom)
     public GameService(@Qualifier("customEscapeRoomBuild") EscapeRoomBuild escapeRoom) {
         this.escapeRoom = escapeRoom;
@@ -30,6 +32,12 @@ public class GameService {
     public String enterRoom() {
         Room currentRoom = escapeRoom.getRooms().get(escapeRoom.getCurrentRoomIndex());
         return "You are now in: " + currentRoom.getDescription();
+    }
+    public FinalTask getFinalTask() {
+        return finalTask;
+    }
+    public void setFinalTask(FinalTask finalTask) {
+        this.finalTask = finalTask;
     }
 
     public Room getCurrentRoom() {
@@ -100,7 +108,8 @@ public class GameService {
     }
 
     public FinalTask prepareFinalTask(List<String> overallSuccessColors) {
-        return new FinalTask(1, "Final Color Sequence Challenge", overallSuccessColors);
+        finalTask = new FinalTask(1, "Final Color Sequence Challenge", overallSuccessColors);
+        return finalTask;
     }
 
     public boolean evaluateFinalChallenge(FinalTask finalTask, String[] userColors) {

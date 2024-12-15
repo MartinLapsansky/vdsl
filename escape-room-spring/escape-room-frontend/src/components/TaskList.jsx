@@ -2,12 +2,18 @@ import React, { useEffect, useState } from 'react';
 import './TaskList.css';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
+import Confetti from 'react-confetti';
 
 const TaskList = () => {
     const [tasks, setTasks] = useState([]);
     const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
     const [answer, setAnswer] = useState('');
     const [showHint, setShowHint] = useState(false);
+    const [finalTask, setFinalTask] = useState(null);
+    const [successColors, setSuccessColors] = useState([]);
+    const [showFinalTask, setShowFinalTask] = useState(false);
+    const [finalAnswer, setFinalAnswer] = useState('');
+    const [showCelebration, setShowCelebration] = useState(false);
 
     useEffect(() => {
         axios.get('/api/escape-room/tasks')
@@ -19,10 +25,35 @@ const TaskList = () => {
                 }
             })
             .catch(error => console.error('Error fetching tasks:', error));
+
+        axios.get('/api/escape-room/final-task')
+            .then(response => {
+                const finalTask = response.data;
+                setFinalTask(finalTask);
+                console.log('Final Task:', finalTask);
+            })
+            .catch(error => console.error('Error fetching final task:', error));
     }, []);
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Enter') {
+                handleConfirmClick();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [answer, tasks, currentTaskIndex]);
 
     const handleInputChange = (value) => {
         setAnswer(value);
+    };
+
+    const handleFinalInputChange = (value) => {
+        setFinalAnswer(value);
     };
 
     const handleHintClick = () => {
@@ -36,12 +67,20 @@ const TaskList = () => {
 
         if (currentTask && answer === currentTask.solution.answer) {
             alert('Correct! Proceeding to the next task...');
+            setSuccessColors(prevColors => {
+                const newColors = [...prevColors, currentTask.successColor];
+                if (currentTaskIndex + 1 >= tasks.length) {
+                    setFinalTask(prevFinalTask => ({
+                        ...prevFinalTask,
+                        successColors: newColors
+                    }));
+                    setShowFinalTask(true);
+                }
+                return newColors;
+            });
             setTimeout(() => {
-                // Move to the next task only if the answer is correct
                 if (currentTaskIndex + 1 < tasks.length) {
                     setCurrentTaskIndex(prevIndex => prevIndex + 1);
-                } else {
-                    alert('Congratulations, you have completed all tasks!');
                 }
                 setAnswer('');
                 setShowHint(false);
@@ -52,36 +91,74 @@ const TaskList = () => {
         }
     };
 
+    const handleFinalConfirmClick = () => {
+        const userColors = finalAnswer.split(',').map(color => color.trim());
+        const isCorrect = finalTask.successColors.length === userColors.length &&
+            finalTask.successColors.every((color, index) => color.toLowerCase() === userColors[index].toLowerCase());
+
+        if (isCorrect) {
+            setShowCelebration(true);
+        } else {
+            alert('Incorrect colors, please try again.');
+        }
+    };
+
     if (tasks.length === 0) {
         return <div>Loading...</div>;
     }
 
-    const currentTask = tasks[currentTaskIndex];
+    const currentTask = currentTaskIndex < tasks.length ? tasks[currentTaskIndex] : finalTask;
 
     return (
         <div className="task-list">
-            <div key={currentTask.id} className="task">
-                <h2>{currentTask.name}</h2>
-                <p>{currentTask.description}</p>
-                {showHint && <p><strong>Hint:</strong> {currentTask.hint}</p>}
-                <p><strong>Details:</strong> {currentTask.taskDetails}</p>
-
-                {/* Input for answering */}
-                <input
-                    type="text"
-                    value={answer}
-                    onChange={(e) => handleInputChange(e.target.value)}
-                    placeholder="Enter your answer"
-                />
-
-                {/* Confirm button */}
-                <button onClick={handleConfirmClick}>Confirm</button>
-
-                {/* Hint button */}
-                <button onClick={handleHintClick}>Hint</button>
+            <div className="room-header">
+                <h1>Welcome to Escape Room!</h1>
+                <h2>Solve the following tasks...</h2>
             </div>
+            {showCelebration ? (
+                <div className="celebration">
+                    <Confetti />
+                    <h2>Great job. You finally escaped the room :)</h2>
+                    {/* Add your celebration animation here */}
+                </div>
+            ) : showFinalTask ? (
+                <div key={finalTask.id} className="task">
+                    <div className="task-container">
+                        <h2>{finalTask.name}</h2>
+                        <p>{finalTask.description}</p>
+                        <p><strong>Success Colors:</strong> {finalTask.successColors.join(', ')}</p>
+                        <input
+                            type="text"
+                            value={finalAnswer}
+                            onChange={(e) => handleFinalInputChange(e.target.value)}
+                            placeholder="Enter the colors separated by commas"
+                        />
+                        <button className="confirm" onClick={handleFinalConfirmClick}>Confirm</button>
+                    </div>
+                </div>
+            ) : (
+                <div key={currentTask.id} className="task">
+                    <div className="task-container">
+                        <h2>{currentTask.name}</h2>
+                        <p>{currentTask.description}</p>
+                        {showHint && <p><strong>Hint:</strong> {currentTask.hint}</p>}
+                        <p><strong>Details:</strong> {currentTask.taskDetails}</p>
+
+                        {/* Input for answering */}
+                        <input
+                            type="text"
+                            value={answer}
+                            onChange={(e) => handleInputChange(e.target.value)}
+                            placeholder="Enter your answer"
+                        />
+                        <div className="buttons">
+                            <button className="confirm" onClick={handleConfirmClick}>Confirm</button>
+                            <button className="hint" onClick={handleHintClick}>Hint</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
-};
-
+}
 export default TaskList;
