@@ -1,21 +1,25 @@
 package org.example.escaperoomspring.services;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.example.escaperoomspring.builder.EscapeRoomBuild;
+import org.example.escaperoomspring.interfaces.MqttServiceInterface;
 import org.example.escaperoomspring.models.FinalTask;
 import org.example.escaperoomspring.models.Room;
 import org.example.escaperoomspring.models.Task;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class GameService {
-    public EscapeRoomBuild escapeRoom;
 
-    public GameService(EscapeRoomBuild escapeRoom) {
+    public EscapeRoomBuild escapeRoom;
+    //(EscapeRoomBuild escapeRoom)
+    public GameService(@Qualifier("customEscapeRoomBuild") EscapeRoomBuild escapeRoom) {
         this.escapeRoom = escapeRoom;
     }
 
@@ -28,27 +32,57 @@ public class GameService {
         return "You are now in: " + currentRoom.getDescription();
     }
 
-    public String handleTask(Task task) {
+    public Room getCurrentRoom() {
+        return escapeRoom.getRooms().get(escapeRoom.getCurrentRoomIndex());
+    }
+
+    public void printClearResult( StringBuilder result){
+        System.out.print(result);
+        result.setLength(0);
+    }
+
+    public String handleTask(Task task, String answer, MqttServiceInterface mqttService) throws MqttException, InterruptedException {
         StringBuilder result = new StringBuilder();
         AtomicBoolean taskCompleted = new AtomicBoolean(false);
         Scanner scanner = new Scanner(System.in);
 
         result.append("Task Name: ").append(task.getName()).append("\n")
                 .append("Task Description: ").append(task.getDescription()).append("\n")
-                .append("Puzzle Details: ").append(task.getPuzzleDetails()).append("\n");
+                .append("Puzzle Details: ").append(task.getPuzzleDetails());
+        printClearResult(result);
+
+        if (task.getType() == Task.taskType.LIGHT_PUZZLE) {
+            // Sleep to allow user to prepare for lights checking
+            Thread.sleep(3000);
+            System.out.println("Task light sequence: " + task.getLightSequence());
+            mqttService.publishLightSequence(task.getLightSequence());
+            // TODO: Add delay if needed
+        }
+        mqttService.publishSingleLight("none");
 
         while (!taskCompleted.get()) {
             result.append("\nEnter your answer or type 'hint' for a hint: ");
+            printClearResult(result);
+
             String userInput = scanner.nextLine().trim();
 
             if (userInput.isEmpty()) {
                 result.append("Please enter a valid answer or request a hint.\n");
             } else if (userInput.equalsIgnoreCase("hint")) {
+                result.setLength(0);
                 result.append("Hint: ").append(task.getHint()).append("\n");
             } else {
                 if (task.execute(userInput)) {
-                    result.append("Correct! Moving to the next challenge...\n");
+                    result.setLength(0);
+
+                    int taskIndex = getCurrentRoom().getCurrentTasksIndex();
+                    getCurrentRoom().incrementSolvedTasks();
                     taskCompleted.set(true);
+                    String lightColor = getCurrentRoom().getTasks().get(taskIndex).getSuccessColor();
+                    mqttService.publishSingleLight(lightColor);
+                    result.append("\nCorrect! Moving to the next challenge...\n");
+                    printClearResult(result);
+                    Thread.sleep(2000);
                 } else {
                     result.append("Incorrect! Try again or ask for a hint.\n");
                 }
@@ -78,6 +112,8 @@ public class GameService {
     }
 
     public boolean isGameOver() {
+        //System.out.println("currentIndex: "+escapeRoom.getCurrentRoomIndex());
+        //System.out.println("no of rooms: "+escapeRoom.getRooms().size());
         return escapeRoom.getCurrentRoomIndex() >= escapeRoom.getRooms().size();
     }
 }

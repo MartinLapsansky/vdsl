@@ -70,6 +70,10 @@ public class Room {
         return name;
     }
 
+    public int getCurrentTasksIndex() {
+        return solvedTasksCount;
+    }
+
     public Task getFinalTask() {
         return finalTask;
     }

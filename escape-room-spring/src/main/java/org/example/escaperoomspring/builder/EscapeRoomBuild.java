@@ -1,10 +1,13 @@
 package org.example.escaperoomspring.builder;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.example.escaperoomspring.interfaces.EscapeRoom;
+import org.example.escaperoomspring.interfaces.MqttServiceInterface;
 import org.example.escaperoomspring.models.*;
 import org.example.escaperoomspring.semantics.GameInterpreter;
 import org.example.escaperoomspring.services.GameService;
 import org.springframework.stereotype.Component;
+import org.example.escaperoomspring.interfaces.MqttServiceInterface;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +16,7 @@ import java.util.Set;
 
 @Component
 public class EscapeRoomBuild implements EscapeRoom {
+    private final MqttServiceInterface mqttService;
     private String welcomeMessage;
     private String escapeMessage;
     private List<Room> rooms;
@@ -22,14 +26,15 @@ public class EscapeRoomBuild implements EscapeRoom {
     private GameInterpreter gameInterpreter;
     private GameService gameService;
 
-
-    public EscapeRoomBuild(EscapeRoomBuilder builder) {
+    public EscapeRoomBuild(EscapeRoomBuilder builder, MqttServiceInterface mqttService) {
         this.welcomeMessage = builder.welcomeMessage;
         this.escapeMessage = builder.escapeMessage;
         this.rooms = builder.rooms;
         this.tasks = builder.tasks;
         this.currentRoomIndex = 0;
+        this.gameService = new GameService(this);
         this.gameInterpreter = new GameInterpreter(gameService);
+        this.mqttService = mqttService;
     }
 
     @Override
@@ -40,8 +45,13 @@ public class EscapeRoomBuild implements EscapeRoom {
 
     @Override
     public List<Task> getTasks() {
+        // Assign unique IDs to tasks if not already assigned
+        for (int i = 0; i < tasks.size(); i++) {
+            tasks.get(i).setId(i);
+        }
         return tasks;
     }
+
     public void addTask(Task task) {
         tasks.add(task);
     }
@@ -69,16 +79,26 @@ public class EscapeRoomBuild implements EscapeRoom {
         return escapeMessage;
     }
 
-    public void play() {
-        gameInterpreter.startGame();
+    public void play(MqttServiceInterface mqttService) throws MqttException, InterruptedException {
+        gameInterpreter.startGame(mqttService);
     }
+
+    public String handleTask(Task task, String answer) throws MqttException, InterruptedException {
+        return gameService.handleTask(task, answer, mqttService);
+    }
+
     @Component
     public static class EscapeRoomBuilder {
+        private final MqttServiceInterface mqttService;
         private String welcomeMessage;
         private String escapeMessage;
         private List<Room> rooms = new ArrayList<>();
         private RoomBuilder currentRoomBuilder;
         private List<Task> tasks = new ArrayList<>();
+
+        public EscapeRoomBuilder(MqttServiceInterface mqttService) {
+            this.mqttService = mqttService;
+        }
 
         public EscapeRoomBuilder setWelcomeMessage(String welcomeMessage) {
             this.welcomeMessage = welcomeMessage;
@@ -96,7 +116,7 @@ public class EscapeRoomBuild implements EscapeRoom {
         }
 
         public EscapeRoomBuild build() {
-            return new EscapeRoomBuild(this);
+            return new EscapeRoomBuild(this, mqttService);
         }
     }
 
@@ -118,6 +138,7 @@ public class EscapeRoomBuild implements EscapeRoom {
 
         public TaskBuilder addTask(int index, String name, String description, Task.taskType type, String taskDetails, String successColor) {
             currentTaskBuilder = new TaskBuilder(this, index, name, description, type, taskDetails, successColor);
+            //this.addTask();
             return currentTaskBuilder;
         }
 
