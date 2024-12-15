@@ -119,7 +119,6 @@ const TaskList = () => {
                 <div className="celebration">
                     <Confetti />
                     <h2>Great job. You finally escaped the room :)</h2>
-                    {/* Add your celebration animation here */}
                 </div>
             ) : showFinalTask ? (
                 <div key={finalTask.id} className="task">
