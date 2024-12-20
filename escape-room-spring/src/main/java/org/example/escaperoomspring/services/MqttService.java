@@ -43,10 +43,12 @@ public class MqttService {
     }
 
     public void publishLightSequence(List<String> lightSequence) throws MqttException, InterruptedException {
+        System.out.println("mqttserv lightSequence: " + lightSequence);
+
         for (String color : lightSequence) {
             //client.publish("openlab/lights", new MqttMessage(color.getBytes()));
             publishSingleLight(color);
-            //System.out.println("Sent color: " + color);
+            System.out.println("mqttserv pub seq Sent color: " + color);
 
             try {
                 Thread.sleep(1000);
@@ -74,7 +76,7 @@ public class MqttService {
                     colorCode = "FF450000";
                     break;
                 case "purple":
-                    colorCode = "RRGGBB00";
+                    colorCode = "19003300";
                     break;
                 case "blue":
                     colorCode = "0000FF00";
@@ -83,7 +85,7 @@ public class MqttService {
                     colorCode = "FFD70000";
                     break;
                 case "pink":
-                    colorCode = "FF149300";
+                    colorCode = "CC006600";
                     break;
                 case "none":
                     colorCode = "00000000";
@@ -101,7 +103,7 @@ public class MqttService {
 
     public void publishSingleLight(String lightColor) throws MqttException {
         ColorConverter colorConv = new ColorConverter();
-        System.out.println("light color " + lightColor);
+        System.out.println("\n mqttserv light color " + lightColor);
         String color = colorConv.getColorCode(lightColor);//"9932CC";
         String topic = "openlab/lights";
 

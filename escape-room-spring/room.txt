@@ -31,7 +31,7 @@ escapeRoom
              solution "orange"
              taskDetails "Which color was displayed after green?"
              3
-             lightSequence "Red, Green, Orange"
+             lightSequence "Red Green Orange"
              successColor "Orange"
 
         finalTask "Red Green"

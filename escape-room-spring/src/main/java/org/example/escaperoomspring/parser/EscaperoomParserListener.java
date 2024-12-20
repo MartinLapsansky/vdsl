@@ -83,7 +83,11 @@ public class EscaperoomParserListener implements EscaperoomListener{
 
             // Finish the task
             taskBuilder
-                .lightColorSequence(taskCtx.lightSequence().get(0).getText())
+                .lightColorSequence(
+                        taskCtx.lightSequence().getText()
+                            .replaceAll("lightSequence", "")
+                                .replaceAll("\"", "")
+                )
                 .addSolution(
                     taskCtx.solution().getText()
                         .replaceAll("solution", "")

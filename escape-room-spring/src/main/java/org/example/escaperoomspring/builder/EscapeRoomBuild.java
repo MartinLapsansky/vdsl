@@ -155,9 +155,11 @@ public class EscapeRoomBuild implements EscapeRoom {
 //            return this;
 //        }
 
-        public TaskBuilder lightColorSequence(String... colors) {
-            for (String color : colors) {
-                task.addLight(color);
+        public TaskBuilder lightColorSequence(String colors) {
+            String[] colorArray = colors.split(" ");
+
+            for (String color : colorArray) {
+                task.addLight(color.trim());
             }
             return this;
         }
@@ -170,7 +172,6 @@ public class EscapeRoomBuild implements EscapeRoom {
     }
 
     public void validate() {
-        // Validate that each room has a unique and valid time limit
         for (Room room : rooms) {
             if (room.getTimeLimit() <= 0) {
                 throw new IllegalArgumentException("Room '" + room.getName() + "' must have a positive time limit.");

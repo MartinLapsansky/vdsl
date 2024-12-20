@@ -24,7 +24,7 @@ public class EscapeRoomService {
                 .addHint("The sequence is Fibonacci.")
                 .finishTask()
                 .addTask(2, "Light Memory Challenge", "Remember the light sequence carefully.", Task.taskType.LIGHT_PUZZLE, "Which color was displayed after blue?", "green")
-                .lightColorSequence("blue", "green", "red")
+                .lightColorSequence("blue green red")
                 .addSolution("green")
                 .addHint("color of grass")
                 .finishTask()

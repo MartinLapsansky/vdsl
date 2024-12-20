@@ -12,7 +12,7 @@ description: 'description' STRING;
 
 finalTask : 'finalTask' successColors;
 
-task: 'task' index=INT name=STRING description type hint solution taskDetails attempts=INT lightSequence* successColor;
+task: 'task' index=INT name=STRING description type hint solution taskDetails attempts=INT lightSequence successColor;
 
 taskDetails: 'taskDetails' STRING;
 

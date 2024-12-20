@@ -31,9 +31,9 @@ public class GameInterpreter {
             System.out.println(gameService.enterRoom());
 
             for (Task task : currentRoom.getTasks()) {
-                System.out.println("task name: "+task.getName());
+                //System.out.println("gameInterpr task name: "+task.getName());
                 currentRoom.addSuccessColor(task.getSuccessColor());
-                System.out.println("task succ color: "+task.getSuccessColor());
+                //System.out.println("gameInterpr task succ color: "+task.getSuccessColor());
                 System.out.println(gameService.handleTask(task, mqttService));
             }
 
