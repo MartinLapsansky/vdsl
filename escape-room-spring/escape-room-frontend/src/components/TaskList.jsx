@@ -142,8 +142,6 @@ const TaskList = () => {
                         <p>{currentTask.description}</p>
                         {showHint && <p><strong>Hint:</strong> {currentTask.hint}</p>}
                         <p><strong>Details:</strong> {currentTask.taskDetails}</p>
-
-                        {/* Input for answering */}
                         <input
                             type="text"
                             value={answer}
